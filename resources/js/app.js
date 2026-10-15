@@ -10,6 +10,8 @@ import visitCode from './dispusip/visit-code';
 import visitorChart from './dispusip/chart';
 import visitorStats from './dispusip/stats';
 import { formatNumber } from './dispusip/format';
+import { startReveal } from './dispusip/reveal';
+import { startTableLabels } from './dispusip/table-labels';
 
 /*
  * Pages switch through wire:navigate. A visit made after a deploy can pull in a newly hashed
@@ -37,5 +39,7 @@ function start() {
     Alpine.data('visitorStats', visitorStats);
     Alpine.magic('fmt', () => formatNumber);
 
+    startReveal();
+    startTableLabels();
     Livewire.start();
 }

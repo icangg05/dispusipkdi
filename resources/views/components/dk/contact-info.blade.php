@@ -8,7 +8,7 @@
         ['icon' => 'map-pin', 'tone' => null, 'label' => 'Alamat kantor', 'value' => $kontak['alamat'], 'help' => $kontak['catatan_alamat'] ?: 'Kantor Dispusip', 'href' => $kontak['maps_link'] ?: '#', 'cta' => 'Petunjuk arah', 'external' => true],
     ]));
 @endphp
-<div class="dk-contact">
+<div class="dk-contact" data-aos="fade-up">
     <div class="dk-contact__list">
         @foreach ($items as $item)
             <a class="dk-ccard" href="{{ $item['href'] }}" @if ($item['external']) target="_blank" rel="noopener" @endif>

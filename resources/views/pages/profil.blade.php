@@ -34,7 +34,7 @@ new #[Layout('layouts::public')] #[Title('Profil Dinas')] class extends Componen
         <x-dk.section tone="sunken">
             <div class="dk-twocol">
                 <x-dk.section-heading eyebrow="Sejarah singkat" eyebrow-icon="history" title="Perjalanan" accent="kami" align="left" />
-                <div class="dk-prose">
+                <div class="dk-prose" data-aos="fade-up" data-aos-delay="100">
                     @foreach ($sejarah as $paragraf)
                         <p>{{ $paragraf }}</p>
                     @endforeach
@@ -47,8 +47,8 @@ new #[Layout('layouts::public')] #[Title('Profil Dinas')] class extends Componen
         <div class="dk-twocol">
             <div>
                 <x-dk.section-heading eyebrow="Arah kerja" eyebrow-icon="target" title="Visi &" accent="Misi" align="left" />
-                <blockquote class="dk-visi"><x-dk.icon name="quote" :size="28" /><p>{{ $profil['visi'] }}</p></blockquote>
-                <ol class="dk-misi">
+                <blockquote class="dk-visi" data-aos="fade-up"><x-dk.icon name="quote" :size="28" /><p>{{ $profil['visi'] }}</p></blockquote>
+                <ol class="dk-misi" data-aos="fade-up" data-aos-delay="100">
                     @foreach ($profil['misi'] as $misi)
                         <li><span>{{ $loop->iteration }}</span>{{ $misi }}</li>
                     @endforeach
@@ -56,7 +56,7 @@ new #[Layout('layouts::public')] #[Title('Profil Dinas')] class extends Componen
             </div>
             <div>
                 <x-dk.section-heading eyebrow="Kewenangan" eyebrow-icon="landmark" title="Tugas &" accent="Fungsi" align="left" />
-                <ul class="dk-points" role="list">
+                <ul class="dk-points" role="list" data-aos="fade-up" data-aos-delay="100">
                     @foreach ($profil['tugas'] as $tugas)
                         <li><span class="dk-tile dk-tile--sm"><x-dk.icon :name="$tugas['icon'] ?: 'book-open'" :size="18" /></span><span><strong>{{ $tugas['title'] }}</strong><small>{{ $tugas['text'] }}</small></span></li>
                     @endforeach
@@ -68,7 +68,7 @@ new #[Layout('layouts::public')] #[Title('Profil Dinas')] class extends Componen
     @if ($struktur)
         <x-dk.section tone="sunken">
             <x-dk.section-heading eyebrow="Organisasi" eyebrow-icon="users" title="Struktur" accent="Organisasi" align="center" />
-            <figure class="dk-struktur">
+            <figure class="dk-struktur" data-aos="fade-up">
                 <img src="{{ $struktur }}" alt="Bagan struktur organisasi {{ site()->get('identitas.nama') }}" loading="lazy">
                 <figcaption>Struktur organisasi {{ site()->get('identitas.nama') }}.</figcaption>
             </figure>

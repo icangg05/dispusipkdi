@@ -45,8 +45,8 @@ new #[Layout('layouts::public')] #[Title('Kontak')] class extends Component
         <x-dk.section-heading eyebrow="Tanya pustakawan" eyebrow-icon="message-circle" title="Ada" accent="pertanyaan?"
             description="Cari dulu di daftar pertanyaan yang sering diajukan. Jika belum terjawab, kirim pertanyaan Anda langsung kepada pustakawan kami." />
         <div class="dk-ask">
-            <x-dk.faq-list :items="$faqs" />
-            <livewire:question-form />
+            <x-dk.faq-list :items="$faqs" data-aos="fade-up" />
+            <div data-aos="fade-up" data-aos-delay="100"><livewire:question-form /></div>
         </div>
     </x-dk.section>
 </div>

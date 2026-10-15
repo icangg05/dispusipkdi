@@ -44,7 +44,7 @@ new #[Layout('layouts::public')] #[Title('Statistik Pengunjung')] class extends 
         <x-dk.section-heading eyebrow="Rincian" eyebrow-icon="list-checks" title="Rincian" accent="kunjungan"
             description="Angka bulan berjalan dihitung sampai hari ini. Tamu dihitung per lembar buku tamu; pengunjung website dihitung sekali per perangkat per hari." />
         <div class="dk-statgrid">
-            <div class="dk-panel">
+            <div class="dk-panel" data-aos="fade-up">
                 <h3 class="dk-panel__title">Keperluan kunjungan bulan ini</h3>
                 <p class="dk-panel__sub">{{ \App\Support\Format::number($totalKep) }} tamu dari buku tamu</p>
                 <ul class="dk-hbars dk-hbars--light" role="list">
@@ -56,7 +56,7 @@ new #[Layout('layouts::public')] #[Title('Statistik Pengunjung')] class extends 
                     @endforeach
                 </ul>
             </div>
-            <div class="dk-panel">
+            <div class="dk-panel" data-aos="fade-up" data-aos-delay="100">
                 <h3 class="dk-panel__title">12 bulan terakhir</h3>
                 <p class="dk-panel__sub">Tamu perpustakaan dan pengunjung website per bulan</p>
                 <div class="dk-tablewrap">

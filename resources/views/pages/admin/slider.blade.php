@@ -141,7 +141,7 @@ new #[Layout('layouts::admin')] #[Title('Slider beranda')] class extends Compone
                                         <span><strong>{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }} · {{ $slide->caption }}</strong><small>{{ $slide->kicker }}</small></span>
                                     </div>
                                 </td>
-                                <td class="max-w-[420px]"><strong>{{ $slide->title }} <em class="font-serif font-semibold text-lentera-700">{{ $slide->accent }}</em></strong><small class="line-clamp-2">{{ $slide->text }}</small></td>
+                                <td class="max-w-[420px]"><strong>{{ $slide->title }} <em class="not-italic text-lentera-700">{{ $slide->accent }}</em></strong><small class="line-clamp-2">{{ $slide->text }}</small></td>
                                 <td><span @class(['ad-tag', 'ad-tag--on' => $slide->is_active])>{{ $slide->is_active ? 'Tampil' : 'Disembunyikan' }}</span></td>
                                 <td>
                                     <div class="ad-actions">

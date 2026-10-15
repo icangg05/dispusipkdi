@@ -1,10 +1,10 @@
 /**
  * Accessibility menu (bottom-left): text size, high contrast, greyscale, link highlight,
- * readable font, text spacing, stop animations, big cursor and read-aloud (id-ID).
+ * text spacing, stop animations, big cursor and read-aloud (id-ID).
  * Effects are dk-a11y-* classes and data-theme="kontras" on <html>; choices are kept per device.
  */
-const AWAL = { teks: 0, kontras: false, abu: false, tautan: false, font: false, spasi: false, diam: false, kursor: false, suara: false };
-const FLAGS = ['abu', 'tautan', 'font', 'spasi', 'diam', 'kursor', 'suara'];
+const AWAL = { teks: 0, kontras: false, abu: false, tautan: false, spasi: false, diam: false, kursor: false, suara: false };
+const FLAGS = ['abu', 'tautan', 'spasi', 'diam', 'kursor', 'suara'];
 export const SKALA = [100, 115, 130];
 const STORAGE_KEY = 'dispusip-a11y';
 

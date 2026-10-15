@@ -7,14 +7,8 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
-/* Fonts (OFL): Lexend (one variable file, all weights) for the interface, Fraunces italic for accent words and
-   upright for form titles and labels, Atkinson Hyperlegible only when a visitor turns on "Huruf mudah dibaca". */
+/* Font (OFL): Lexend, one variable file with every weight, is the only typeface on every page. */
 @font-face { font-family: Lexend; font-style: normal; font-weight: 100 900; font-display: swap; src: url('../fonts/Lexend-Variable.woff2') format('woff2'); }
-@font-face { font-family: Fraunces; font-style: italic; font-weight: 500; font-display: swap; src: url('../fonts/Fraunces-500-Italic.woff2') format('woff2'); }
-@font-face { font-family: Fraunces; font-style: italic; font-weight: 600; font-display: swap; src: url('../fonts/Fraunces-600-Italic.woff2') format('woff2'); }
-@font-face { font-family: Fraunces; font-style: normal; font-weight: 600; font-display: swap; src: url('../fonts/Fraunces-600.woff2') format('woff2'); }
-@font-face { font-family: 'Atkinson Hyperlegible'; font-style: normal; font-weight: 400; font-display: swap; src: url('../fonts/AtkinsonHyperlegible-400.woff2') format('woff2'); }
-@font-face { font-family: 'Atkinson Hyperlegible'; font-style: normal; font-weight: 700; font-display: swap; src: url('../fonts/AtkinsonHyperlegible-700.woff2') format('woff2'); }
 
 /* Tailwind utilities read the same tokens, so bg-laut-700 or text-ink-muted follow the high-contrast theme too. */
 @theme inline {
@@ -53,8 +47,9 @@
 
 @theme {
     --font-sans: Lexend, system-ui, -apple-system, 'Segoe UI', sans-serif;
-    --font-serif: Fraunces, Georgia, 'Times New Roman', serif;
-    --font-mudah: 'Atkinson Hyperlegible', Verdana, system-ui, sans-serif;
+    /* The design system's serif slot and Tailwind's mono (font-mono, <code>) point at Lexend too. */
+    --font-serif: var(--font-sans);
+    --font-mono: var(--font-sans);
 
     --radius-xs: 2px;
     --radius-sm: 3px;

@@ -1,7 +1,8 @@
-{{-- Server-rendered dialog: render it inside @if ($showForm) and close with the given Livewire action. --}}
+{{-- Server-rendered dialog: render it inside @if ($showForm) and close with the given Livewire action.
+     The first field gets focus only with a mouse: on touch screens that would pop the keyboard open. --}}
 @props(['title', 'size' => null, 'close' => 'tutup'])
 <div class="ad-modal" role="dialog" aria-modal="true" aria-labelledby="ad-modal-title" wire:keydown.escape.window="{{ $close }}"
-    x-data x-init="$nextTick(() => $el.querySelector('input:not([type=hidden]), select, textarea')?.focus())">
+    x-data x-init="matchMedia('(pointer: fine)').matches && $nextTick(() => $el.querySelector('input:not([type=hidden]), select, textarea')?.focus())">
     <div @class(['ad-modal__box', 'ad-modal__box--'.$size => $size]) @click.outside="$wire.{{ $close }}()">
         <div class="ad-modal__head">
             <h2 id="ad-modal-title">{{ $title }}</h2>

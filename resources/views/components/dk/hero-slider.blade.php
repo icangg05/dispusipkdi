@@ -14,23 +14,26 @@
     {{ $slot }}
 
     <div class="dk-container dk-hero__in">
-        @foreach ($slides as $k => $slide)
-            <div class="dk-hero__copy" x-show="i === {{ $k }}" @if ($k > 0) style="display: none" @endif :aria-live="paused ? 'polite' : 'off'">
-                <x-dk.eyebrow icon="sparkles" dark>{{ $slide->kicker }}</x-dk.eyebrow>
-                @if ($k === 0)
-                    <h1 class="dk-hero__title">{{ $slide->title }}@if ($slide->accent) <em class="dk-accent">{{ $slide->accent }}</em>@endif</h1>
-                @else
-                    <h2 class="dk-hero__title">{{ $slide->title }}@if ($slide->accent) <em class="dk-accent">{{ $slide->accent }}</em>@endif</h2>
-                @endif
-                @if ($slide->text)
-                    <p class="dk-hero__text">{{ $slide->text }}</p>
-                @endif
-                <div class="dk-hero__ctas">
-                    <x-dk.button variant="lentera" size="lg" icon="notebook-pen" :href="route('buku-tamu')" wire:navigate>Isi Buku Tamu</x-dk.button>
-                    <x-dk.button variant="on-dark" size="lg" icon="layers" href="#layanan">Jelajahi Layanan</x-dk.button>
+        {{-- Every slide stays in the layout (hidden ones invisible), so the hero is as tall as its longest slide. --}}
+        <div class="dk-hero__slides">
+            @foreach ($slides as $k => $slide)
+                <div class="dk-hero__copy {{ $k === 0 ? 'is-active' : '' }}" :class="{ 'is-active': i === {{ $k }} }" :aria-live="paused ? 'polite' : 'off'">
+                    <x-dk.eyebrow icon="sparkles" dark>{{ $slide->kicker }}</x-dk.eyebrow>
+                    @if ($k === 0)
+                        <h1 class="dk-hero__title">{{ $slide->title }}@if ($slide->accent) <em class="dk-accent">{{ $slide->accent }}</em>@endif</h1>
+                    @else
+                        <h2 class="dk-hero__title">{{ $slide->title }}@if ($slide->accent) <em class="dk-accent">{{ $slide->accent }}</em>@endif</h2>
+                    @endif
+                    @if ($slide->text)
+                        <p class="dk-hero__text">{{ $slide->text }}</p>
+                    @endif
+                    <div class="dk-hero__ctas">
+                        <x-dk.button variant="lentera" size="lg" icon="notebook-pen" :href="route('buku-tamu')" wire:navigate>Isi Buku Tamu</x-dk.button>
+                        <x-dk.button variant="on-dark" size="lg" icon="layers" href="#layanan">Jelajahi Layanan</x-dk.button>
+                    </div>
                 </div>
-            </div>
-        @endforeach
+            @endforeach
+        </div>
 
         <aside class="dk-hero__info" aria-label="Layanan hari ini">
             <div class="dk-hero__info-top">

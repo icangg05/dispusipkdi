@@ -18,7 +18,7 @@ class QuestionFactory extends Factory
     {
         return [
             'nama' => fake()->name(),
-            'kontak' => fake()->safeEmail(),
+            'kontak' => '08'.fake()->numerify('##########'),
             'topik' => fake()->randomElement(array_keys(config('dispusip.topik_pertanyaan'))),
             'isi' => fake()->sentence(14),
             'status' => QuestionStatus::Baru,

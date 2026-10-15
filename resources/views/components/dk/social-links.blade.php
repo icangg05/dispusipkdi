@@ -9,7 +9,6 @@
                     <span class="dk-soc-card__text">
                         <strong>{{ $s['label'] }}</strong>
                         <span>{{ $s['handle'] }}</span>
-                        @if ($s['followers'])<small>{{ $s['followers'] }}</small>@endif
                     </span>
                     <span class="dk-soc-card__cta">Ikuti <x-dk.icon name="arrow-up-right" :size="16" /></span>
                 </a>

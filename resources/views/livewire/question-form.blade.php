@@ -2,8 +2,10 @@
 
 use App\Enums\QuestionStatus;
 use App\Models\Question;
+use App\Rules\WhatsappNumber;
 use App\Support\Format;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Locked;
@@ -11,6 +13,7 @@ use Livewire\Component;
 
 /**
  * A card for asking the librarians: boxed fields with leading icons and topic chips.
+ * The answer goes back by WhatsApp, so a WhatsApp number is required.
  */
 new class extends Component
 {
@@ -42,19 +45,13 @@ new class extends Component
 
             $data = $this->validate([
                 'nama' => ['required', 'string', 'max:100'],
-                'kontak' => ['required', 'string', 'max:120', function (string $attribute, mixed $value, \Closure $fail): void {
-                    $isEmail = (bool) filter_var($value, FILTER_VALIDATE_EMAIL);
-                    $digits = strlen(preg_replace('/\D/', '', (string) $value));
-
-                    if (! $isEmail && ($digits < 9 || $digits > 15)) {
-                        $fail('Periksa lagi email atau nomor WhatsApp ini.');
-                    }
-                }],
+                'kontak' => ['required', 'string', 'max:20', new WhatsappNumber],
                 'topik' => ['required', Rule::in(array_keys(config('dispusip.topik_pertanyaan')))],
                 'isi' => ['required', 'string', 'min:10', 'max:'.self::MAKS],
             ], [
                 'nama.required' => 'Tulis nama Anda.',
-                'kontak.required' => 'Tulis email atau nomor WhatsApp untuk jawaban.',
+                'kontak.required' => 'Tulis nomor WhatsApp untuk menerima jawaban.',
+                'kontak.max' => 'Tulis nomor WhatsApp yang aktif, misalnya 081234567890.',
                 'topik.required' => 'Pilih topik pertanyaan.',
                 'topik.in' => 'Pilih topik pertanyaan.',
                 'isi.required' => 'Tulis pertanyaan Anda, minimal 10 karakter.',
@@ -84,7 +81,7 @@ new class extends Component
             'nama' => Format::givenName($data['nama']),
             'kontak' => trim($data['kontak']),
             'topik' => $data['topik'],
-            'isi' => trim($data['isi']),
+            'isi' => Str::ucfirst(trim($data['isi'])),
         ];
 
         $this->reset('nama', 'kontak', 'topik', 'isi', 'situs');
@@ -126,7 +123,7 @@ new class extends Component
     @if ($terkirim)
         <div class="dk-form__body dk-form__done" role="status">
             <p class="dk-form__thanks">Terima kasih, {{ $terkirim['nama'] }}.</p>
-            <p class="dk-form__note">Pertanyaan Anda tentang {{ mb_strtolower($terkirim['topik']) }} sudah kami terima. Jawaban dikirim ke <strong>{{ $terkirim['kontak'] }}</strong> pada jam layanan.</p>
+            <p class="dk-form__note">Pertanyaan Anda tentang {{ mb_strtolower($terkirim['topik']) }} sudah kami terima. Jawaban kami kirim lewat WhatsApp ke <strong>{{ $terkirim['kontak'] }}</strong> pada jam layanan.</p>
             <blockquote class="dk-form__quote">{{ $terkirim['isi'] }}</blockquote>
             <x-dk.button variant="secondary" icon="pencil" wire:click="ulang">Tulis pertanyaan lain</x-dk.button>
         </div>
@@ -142,12 +139,12 @@ new class extends Component
             </div>
 
             <div @class(['dk-field', 'has-error' => $errors->has('kontak')])>
-                <label class="dk-field__label" for="qf-kontak">Email atau nomor WhatsApp</label>
+                <label class="dk-field__label" for="qf-kontak">Nomor WhatsApp</label>
                 <div class="dk-input">
-                    <x-dk.icon name="mail" :size="18" />
-                    <input id="qf-kontak" data-err="kontak" wire:model="kontak" autocomplete="email" maxlength="120" placeholder="contoh: nama@email.com atau 0812xxxxxxx" aria-describedby="qf-kontak-help @error('kontak') qf-kontak-err @enderror" @error('kontak') aria-invalid="true" @enderror>
+                    <x-dk.icon name="phone" :size="18" />
+                    <input id="qf-kontak" type="tel" data-err="kontak" wire:model="kontak" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="contoh: 081234567890" aria-describedby="qf-kontak-help @error('kontak') qf-kontak-err @enderror" @error('kontak') aria-invalid="true" @enderror>
                 </div>
-                <span class="dk-field__help" id="qf-kontak-help">Jawaban kami kirim ke sini.</span>
+                <span class="dk-field__help" id="qf-kontak-help">Jawaban kami kirim lewat WhatsApp ke nomor ini.</span>
                 @error('kontak')<span class="dk-field__err" id="qf-kontak-err"><x-dk.icon name="circle-alert" :size="15" /> {{ $message }}</span>@enderror
             </div>
 

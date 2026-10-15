@@ -4,7 +4,6 @@
         ['id' => 'kontras', 'icon' => 'contrast', 'label' => 'Kontras tinggi'],
         ['id' => 'abu', 'icon' => 'droplet', 'label' => 'Skala abu-abu'],
         ['id' => 'tautan', 'icon' => 'link', 'label' => 'Sorot tautan'],
-        ['id' => 'font', 'icon' => 'case-sensitive', 'label' => 'Huruf mudah dibaca'],
         ['id' => 'spasi', 'icon' => 'space', 'label' => 'Spasi teks'],
         ['id' => 'diam', 'icon' => 'circle-pause', 'label' => 'Hentikan animasi'],
         ['id' => 'kursor', 'icon' => 'mouse-pointer-2', 'label' => 'Kursor besar'],

@@ -94,7 +94,7 @@ new #[Layout('layouts::public')] #[Title('Berita & Pengumuman')] class extends C
             @else
                 <div class="dk-newscols">
                     @foreach ($posts as $post)
-                        <x-dk.news-card :post="$post" wire:key="post-{{ $post->id }}" />
+                        <x-dk.news-card :post="$post" wire:key="post-{{ $post->id }}" data-aos="fade-up" data-aos-delay="{{ ($loop->index % 3) * 80 }}" />
                     @endforeach
                 </div>
             @endif

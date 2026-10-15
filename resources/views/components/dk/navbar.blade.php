@@ -3,7 +3,8 @@
     $nav = site()->nav();
     $kontak = site()->kontak();
     $status = site()->status();
-    $isActive = fn (array $item): bool => $item['active'] && request()->routeIs($item['active']);
+    $pageRoute = page_route_name();
+    $isActive = fn (array $item): bool => $item['active'] && $pageRoute && \Illuminate\Support\Str::is($item['active'], $pageRoute);
 @endphp
 <header {{ $attributes->class(['dk-nav', 'dk-nav--overlay' => $overlay]) }} x-data="{ open: false }" @keydown.escape.window="open = false">
     <div class="dk-topbar">

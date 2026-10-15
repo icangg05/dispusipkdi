@@ -72,10 +72,10 @@ new #[Layout('layouts::bare')] #[Title('Masuk Admin')] class extends Component
             <h2>Masuk</h2>
             <p>Khusus petugas Dispusip.</p>
             <x-ad.field label="Email" for="email" error="email">
-                <input id="email" type="email" class="ad-input" wire:model="email" autocomplete="username" autofocus required>
+                <input id="email" type="email" class="ad-input" wire:model="email" autocomplete="username" placeholder="Alamat email akun Anda" autofocus required>
             </x-ad.field>
             <x-ad.field label="Kata sandi" for="password" error="password">
-                <input id="password" type="password" class="ad-input" wire:model="password" autocomplete="current-password" required>
+                <input id="password" type="password" class="ad-input" wire:model="password" autocomplete="current-password" placeholder="Kata sandi akun Anda" required>
             </x-ad.field>
             <x-ad.check model="remember">Ingat saya di perangkat ini</x-ad.check>
             <x-dk.button type="submit" variant="primary" size="lg" block wire:loading.attr="disabled" wire:target="masuk">Masuk</x-dk.button>

@@ -28,7 +28,7 @@
             var c = document.documentElement.classList;
             if (s.teks === 1) c.add('dk-a11y-teks-1');
             if (s.teks === 2) c.add('dk-a11y-teks-2');
-            ['abu', 'tautan', 'font', 'spasi', 'diam', 'kursor', 'suara'].forEach(function (k) { if (s[k]) c.add('dk-a11y-' + k); });
+            ['abu', 'tautan', 'spasi', 'diam', 'kursor', 'suara'].forEach(function (k) { if (s[k]) c.add('dk-a11y-' + k); });
             if (s.kontras) document.documentElement.setAttribute('data-theme', 'kontras');
         } catch (e) {}
     })();

@@ -55,7 +55,7 @@ new #[Layout('layouts::public')] class extends Component
                 description="Pilih layanan yang Anda butuhkan. Semuanya gratis untuk warga Kota Kendari." />
             <div class="dk-svcgrid">
                 @foreach ($services as $service)
-                    <x-dk.service-card :service="$service" wire:key="svc-{{ $service->id }}" />
+                    <x-dk.service-card :service="$service" wire:key="svc-{{ $service->id }}" data-aos="fade-up" data-aos-delay="{{ ($loop->index % 4) * 80 }}" />
                 @endforeach
             </div>
         </x-dk.section>
@@ -78,7 +78,7 @@ new #[Layout('layouts::public')] class extends Component
             <div class="dk-center"><x-dk.button variant="secondary" icon-right="arrow-right" :href="route('galeri')" wire:navigate>Lihat semua galeri</x-dk.button></div>
         </x-dk.media-gallery>
         @if (count(site()->sosmed()))
-            <div class="dk-follow">
+            <div class="dk-follow" data-aos="fade-up">
                 <div class="dk-follow__text">
                     <strong>Ikuti kabar terbaru Dispusip</strong>
                     <span>Info layanan, jadwal perpustakaan keliling, dan dokumentasi kegiatan di media sosial kami.</span>
@@ -94,8 +94,8 @@ new #[Layout('layouts::public')] class extends Component
         <x-dk.section-heading eyebrow="Tanya pustakawan" eyebrow-icon="message-circle" title="Ada" accent="pertanyaan?"
             description="Cari dulu di daftar pertanyaan yang sering diajukan. Jika belum terjawab, kirim pertanyaan Anda langsung kepada pustakawan kami." />
         <div class="dk-ask">
-            <x-dk.faq-list :items="$faqs" />
-            <livewire:question-form />
+            <x-dk.faq-list :items="$faqs" data-aos="fade-up" />
+            <div data-aos="fade-up" data-aos-delay="100"><livewire:question-form /></div>
         </div>
     </x-dk.section>
 

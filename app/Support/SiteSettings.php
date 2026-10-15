@@ -17,7 +17,7 @@ class SiteSettings
 {
     public const CACHE_KEY = 'site-settings';
 
-    public const GROUPS = ['identitas', 'profil', 'kontak', 'sosmed', 'jadwal', 'angka', 'bukutamu'];
+    public const GROUPS = ['identitas', 'profil', 'kontak', 'sosmed', 'jadwal', 'angka', 'bukutamu', 'balasan'];
 
     public const PLATFORMS = [
         'instagram' => 'Instagram',
@@ -71,10 +71,10 @@ class SiteSettings
                 'maps_embed' => null,
             ],
             'sosmed' => [
-                'instagram' => ['handle' => '@dispusip.kendari', 'url' => 'https://instagram.com/', 'followers' => '12,4 rb pengikut'],
-                'facebook' => ['handle' => 'Dispusip Kota Kendari', 'url' => 'https://facebook.com/', 'followers' => '8,9 rb pengikut'],
-                'tiktok' => ['handle' => '@dispusip.kendari', 'url' => 'https://tiktok.com/', 'followers' => '5,2 rb pengikut'],
-                'youtube' => ['handle' => 'Dispusip Kendari', 'url' => 'https://youtube.com/', 'followers' => '1,7 rb pelanggan'],
+                'instagram' => ['handle' => '@dispusip.kendari', 'url' => 'https://instagram.com/'],
+                'facebook' => ['handle' => 'Dispusip Kota Kendari', 'url' => 'https://facebook.com/'],
+                'tiktok' => ['handle' => '@dispusip.kendari', 'url' => 'https://tiktok.com/'],
+                'youtube' => ['handle' => 'Dispusip Kendari', 'url' => 'https://youtube.com/'],
             ],
             'jadwal' => [
                 ['hari' => 'Minggu', 'sesi' => []],
@@ -93,6 +93,26 @@ class SiteSettings
             ],
             'bukutamu' => [
                 'foto_wajib' => true,
+            ],
+            'balasan' => [
+                'template' => [
+                    [
+                        'judul' => 'Jawaban umum',
+                        'isi' => "Halo {nama}, terima kasih sudah bertanya kepada {dinas} tentang {topik}.\n\nPertanyaan Anda:\n\"{pertanyaan}\"\n\nJawaban kami:\n\n\nSemoga membantu. Salam,\n{petugas}\n{dinas}",
+                    ],
+                    [
+                        'judul' => 'Datang ke meja layanan',
+                        'isi' => "Halo {nama}, terima kasih atas pertanyaan Anda tentang {topik}.\n\nUntuk keperluan ini, silakan datang langsung ke meja layanan {dinas} pada jam layanan. Petugas kami akan membantu Anda di tempat.\n\nSalam,\n{petugas}",
+                    ],
+                    [
+                        'judul' => 'Kunjungan rombongan',
+                        'isi' => "Halo {nama}, terima kasih sudah merencanakan kunjungan ke {dinas}.\n\nAgar ruang baca dan pemandu bisa kami siapkan, mohon kirimkan:\n1. Nama sekolah, kampus, atau komunitas\n2. Perkiraan jumlah peserta\n3. Tanggal dan jam kunjungan yang diinginkan\n\nSalam,\n{petugas}",
+                    ],
+                    [
+                        'judul' => 'Sedang ditindaklanjuti',
+                        'isi' => "Halo {nama}, pertanyaan Anda tentang {topik} sudah kami terima dan sedang kami teruskan ke bidang terkait. Kami akan mengabari Anda kembali lewat nomor ini.\n\nSalam,\n{petugas}\n{dinas}",
+                    ],
+                ],
             ],
         ];
     }
@@ -178,7 +198,7 @@ class SiteSettings
     /**
      * Social accounts that have a link, in the fixed platform order.
      *
-     * @return list<array{platform: string, label: string, handle: string, href: string, followers: ?string}>
+     * @return list<array{platform: string, label: string, handle: string, href: string}>
      */
     public function sosmed(): array
     {
@@ -196,7 +216,6 @@ class SiteSettings
                 'label' => $label,
                 'handle' => $row['handle'] ?? $label,
                 'href' => $row['url'],
-                'followers' => $row['followers'] ?? null,
             ];
         }
 
@@ -241,6 +260,16 @@ class SiteSettings
     public function fotoTamuWajib(): bool
     {
         return (bool) $this->get('bukutamu.foto_wajib', true);
+    }
+
+    /**
+     * Reply templates the admin picks from when answering a question.
+     *
+     * @return list<array{judul: string, isi: string}>
+     */
+    public function templateBalasan(): array
+    {
+        return array_values(array_filter($this->get('balasan.template', []), fn (array $t): bool => filled($t['isi'] ?? null)));
     }
 
     /**

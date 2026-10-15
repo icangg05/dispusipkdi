@@ -18,7 +18,7 @@
 
     <ul class="dk-ggrid" role="list">
         <template x-for="(g, k) in list" :key="g.id">
-            <li class="dk-gitem" :class="{ 'dk-gitem--big': k === 0, 'dk-gitem--poster': !!g.poster }">
+            <li class="dk-gitem" :class="{ 'dk-gitem--big': k === 0, 'dk-gitem--poster': !!g.poster }" data-aos="fade-up" :data-aos-delay="(k % 4) * 60">
                 <button type="button" class="dk-gitem__btn" @click="show(k)" :aria-label="(g.type === 'video' ? 'Putar video: ' : 'Lihat foto: ') + g.title">
                     <template x-if="g.poster">
                         <span class="dk-poster" :class="'dk-poster--' + (g.poster.tone || 'laut')">

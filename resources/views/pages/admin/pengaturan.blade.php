@@ -59,7 +59,7 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
 
         foreach (array_keys(SiteSettings::PLATFORMS) as $platform) {
             $row = $settings->get('sosmed.'.$platform, []);
-            $this->sosmed[$platform] = ['handle' => (string) ($row['handle'] ?? ''), 'url' => (string) ($row['url'] ?? ''), 'followers' => (string) ($row['followers'] ?? '')];
+            $this->sosmed[$platform] = ['handle' => (string) ($row['handle'] ?? ''), 'url' => (string) ($row['url'] ?? '')];
         }
 
         foreach ($settings->jadwal() as $day => $entry) {
@@ -169,12 +169,13 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
         ]);
 
         if ($this->logo) {
-            $this->identitas['logo'] = Media::store($this->logo, 'situs', $this->identitas['logo'] ?? null);
+            $this->identitas['logo'] = Media::store($this->logo, 'situs', $this->identitas['logo'] ?? null, maxSide: 512);
         }
 
         foreach (['gambarUtama' => 'gambar_utama', 'gambarKedua' => 'gambar_kedua', 'struktur' => 'struktur'] as $prop => $key) {
             if ($this->{$prop}) {
-                $this->profil[$key] = Media::store($this->{$prop}, 'situs', $this->profil[$key] ?? null);
+                // The organisation chart keeps more pixels so its small print stays readable.
+                $this->profil[$key] = Media::store($this->{$prop}, 'situs', $this->profil[$key] ?? null, maxSide: $key === 'struktur' ? 2560 : Media::MAX_SIDE);
             }
         }
 
@@ -219,7 +220,6 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
         $this->validate([
             'sosmed.*.url' => ['nullable', 'url', 'max:255'],
             'sosmed.*.handle' => ['nullable', 'string', 'max:60'],
-            'sosmed.*.followers' => ['nullable', 'string', 'max:40'],
         ], [
             'sosmed.*.url.url' => 'Tautan harus diawali https://.',
         ]);
@@ -431,11 +431,10 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
             <div class="ad-card__head"><h2 class="ad-card__title"><x-dk.icon name="globe" :size="18" /> Media sosial</h2></div>
             <div class="ad-card__body ad-form">
                 @foreach (\App\Support\SiteSettings::PLATFORMS as $platform => $label)
-                    <div class="grid items-start gap-4 md:grid-cols-[180px_minmax(0,1fr)_minmax(0,1fr)_minmax(0,0.8fr)]" wire:key="sosmed-{{ $platform }}">
+                    <div class="grid items-start gap-4 md:grid-cols-[180px_minmax(0,1fr)_minmax(0,1fr)]" wire:key="sosmed-{{ $platform }}">
                         <span class="flex items-center gap-3 pt-7 font-bold"><span class="dk-soc-card__icon"><x-dk.icon :name="$platform" :size="22" /></span>{{ $label }}</span>
                         <x-ad.field label="Tautan profil" error="sosmed.{{ $platform }}.url"><input type="url" class="ad-input" wire:model="sosmed.{{ $platform }}.url" placeholder="https://"></x-ad.field>
                         <x-ad.field label="Nama akun" error="sosmed.{{ $platform }}.handle"><input class="ad-input" wire:model="sosmed.{{ $platform }}.handle" placeholder="@dispusip.kendari"></x-ad.field>
-                        <x-ad.field label="Pengikut" error="sosmed.{{ $platform }}.followers" optional><input class="ad-input" wire:model="sosmed.{{ $platform }}.followers" placeholder="12,4 rb pengikut"></x-ad.field>
                     </div>
                 @endforeach
             </div>

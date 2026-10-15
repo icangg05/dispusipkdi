@@ -4,7 +4,7 @@
     $image ??= \App\Support\Media::url($profil['gambar_kedua'] ?? null) ?? asset('images/contoh/buku-terbuka.jpg');
     $image2 ??= \App\Support\Media::url($profil['gambar_utama'] ?? null) ?? asset('images/contoh/ruang-baca.jpg');
 @endphp
-<div class="dk-profile" x-data="{ tab: 'profil' }">
+<div class="dk-profile" x-data="{ tab: 'profil' }" data-aos="fade-up">
     <div class="dk-profile__media">
         <div class="dk-frame dk-frame--a"><img src="{{ $image2 }}" alt="Ruang baca umum Dispusip Kota Kendari" loading="lazy"></div>
         <div class="dk-frame dk-frame--b"><img src="{{ $image }}" alt="Buku terbuka di meja baca" loading="lazy"></div>

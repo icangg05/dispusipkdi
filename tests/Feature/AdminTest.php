@@ -100,6 +100,25 @@ class AdminTest extends TestCase
         $this->assertSame('jam-layanan-baru-mulai-november', $post->slug);
         $this->assertTrue($post->isVisible());
         Storage::disk('public')->assertExists($post->image);
+        $this->assertStringEndsWith('.webp', $post->image);
+    }
+
+    public function test_site_images_are_compressed_to_the_size_each_one_needs(): void
+    {
+        Storage::fake('public');
+
+        Livewire::actingAs(User::factory()->create())
+            ->test('pages::admin.pengaturan')
+            ->set('logo', UploadedFile::fake()->image('logo.png', 1200, 1200))
+            ->set('gambarUtama', UploadedFile::fake()->image('gedung.jpg', 2400, 1600))
+            ->set('struktur', UploadedFile::fake()->image('bagan.png', 3000, 1500))
+            ->call('simpanIdentitas')
+            ->assertHasNoErrors();
+
+        $settings = app(SiteSettings::class);
+        $this->assertSame([512, 512], $this->imageSize($settings->get('identitas.logo')));
+        $this->assertSame([1920, 1280], $this->imageSize($settings->get('profil.gambar_utama')));
+        $this->assertSame([2560, 1280], $this->imageSize($settings->get('profil.struktur')));
     }
 
     public function test_service_hours_are_saved_in_minutes(): void
@@ -133,5 +152,15 @@ class AdminTest extends TestCase
             ->set('kontak.maps_embed', 'https://evil.example/embed')
             ->call('simpanKontak')
             ->assertHasErrors(['kontak.maps_embed']);
+    }
+
+    /**
+     * @return array{0: int, 1: int}
+     */
+    private function imageSize(string $path): array
+    {
+        $info = getimagesizefromstring(Storage::disk('public')->get($path));
+
+        return [$info[0], $info[1]];
     }
 }

@@ -26,7 +26,7 @@
             <span class="ad-help">{{ \Illuminate\Support\Str::limit($file->getClientOriginalName(), 40) }}</span>
         @endif
         <span class="ad-help" wire:loading wire:target="{{ $model }}">Mengunggah…</span>
-        <span class="ad-help">JPG, PNG, atau WebP, paling besar 4 MB.</span>
+        <span class="ad-help">JPG, PNG, atau WebP, paling besar 4 MB. Gambar otomatis dikompres dan disimpan sebagai WebP.</span>
         {{ $slot }}
     </div>
 </div>

@@ -55,11 +55,11 @@ new class extends Component
     <div wire:loading.class="opacity-60" class="transition-opacity">
         @if ($first)
             <div @class(['dk-newsgrid', 'dk-newsgrid--single' => $rest->isEmpty()])>
-                <x-dk.news-card :post="$first" variant="featured" wire:key="post-{{ $first->id }}" />
+                <x-dk.news-card :post="$first" variant="featured" wire:key="post-{{ $first->id }}" data-aos="fade-up" />
                 @if ($rest->isNotEmpty())
                     <div class="dk-newsgrid__side">
                         @foreach ($rest->take(2) as $post)
-                            <x-dk.news-card :post="$post" wire:key="post-{{ $post->id }}" />
+                            <x-dk.news-card :post="$post" wire:key="post-{{ $post->id }}" data-aos="fade-up" data-aos-delay="{{ ($loop->index + 1) * 100 }}" />
                         @endforeach
                     </div>
                 @endif
@@ -67,7 +67,7 @@ new class extends Component
             @if ($rest->count() > 2)
                 <div class="dk-newslist">
                     @foreach ($rest->slice(2, 3) as $post)
-                        <x-dk.news-card :post="$post" variant="compact" wire:key="post-c-{{ $post->id }}" />
+                        <x-dk.news-card :post="$post" variant="compact" wire:key="post-c-{{ $post->id }}" data-aos="fade-up" data-aos-delay="{{ $loop->index * 80 }}" />
                     @endforeach
                 </div>
             @endif

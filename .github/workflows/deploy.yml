@@ -1,0 +1,76 @@
+name: Deploy ke VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          command_timeout: 30m
+          script: |
+            set -e
+            cd /var/www/dispusipkdi
+
+            # Semua perintah di bawah memakai compose produksi, bukan compose.yml
+            # (yang itu dev: bind mount kode, mysql terbuka ke :3306, service vite).
+            export COMPOSE_FILE=compose.prod.yml
+
+            echo "==> Sinkron kode dengan origin/main..."
+            # reset --hard, bukan pull: perbaikan darurat yang sempat diterapkan
+            # langsung di server tidak boleh membuat deploy macet karena konflik.
+            # Berkas untracked (.env, storage/app) tidak tersentuh.
+            git fetch --prune origin main
+            git reset --hard origin/main
+
+            # Kode dibakar ke dalam image (stage `production`), tidak di-mount.
+            # Karena itu `--build` wajib: tanpa itu kontainer lama terus jalan
+            # dengan kode lama tanpa satu pun galat yang menunjukkannya.
+            # composer install dan npm run build sudah dikerjakan stage `build`
+            # di Dockerfile, jadi tidak ada langkah dependensi di sini.
+            echo "==> Bangun image dan jalankan..."
+            docker compose up -d --build --remove-orphans
+
+            echo "==> Migrasi dan cache..."
+            docker compose exec -T app php artisan migrate --force
+            # `optimize` = config + route + view + event cache sekaligus. Dijalankan
+            # di sini, bukan saat build: .env baru dipasang ketika kontainer jalan.
+            docker compose exec -T app php artisan optimize
+            # Tidak ada `octane:reload` di sini: `up -d --build` di atas sudah
+            # membuat ulang kontainer, jadi worker memang baru. (Selain itu
+            # reload gagal karena config('octane.server') default ke roadrunner
+            # sementara kita jalan dengan frankenphp.)
+
+            echo "==> Tunggu aplikasi siap..."
+            # Port hanya terikat ke 127.0.0.1:8005; yang menghadap internet nginx host.
+            for i in $(seq 1 30); do
+              if curl -fsS -o /dev/null http://127.0.0.1:8005/up; then
+                echo "Aplikasi merespons."
+                break
+              fi
+              if [ "$i" = "30" ]; then
+                echo "Aplikasi tidak merespons setelah 60 detik." >&2
+                docker compose logs --tail=50 app >&2
+                exit 1
+              fi
+              sleep 2
+            done
+
+            echo "==> Bersihkan image lama..."
+            # Tiap deploy dengan --build meninggalkan image dangling; di VPS kecil
+            # ini yang diam-diam menghabiskan disk.
+            docker image prune -f
+
+            docker compose ps
+            df -h /
+            echo "Done!"

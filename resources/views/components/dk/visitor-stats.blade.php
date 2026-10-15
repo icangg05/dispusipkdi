@@ -14,14 +14,14 @@
         <x-dk.section-heading eyebrow="Statistik" eyebrow-icon="chart-column" title="Statistik" accent="Pengunjung" align="center" dark :id="$id.'-title'"
             description="Data kunjungan dari buku tamu digital dan pengunjung website, diperbarui otomatis setiap hari." />
 
-        <div class="dk-statsec__tiles">
+        <div class="dk-statsec__tiles" data-aos="fade-up">
             <x-dk.stat-tile dark highlight icon="user-check" label="Tamu hari ini" :value="$tamu['hariIni']" :delta="StatistikService::pct($tamu['hariIni'], $tamu['kemarinSamaJam'])" delta-label="vs jam yang sama kemarin" />
             <x-dk.stat-tile dark icon="users" label="Tamu bulan ini" :value="$tamu['bulanIni']" :delta="StatistikService::pct($tamu['bulanIni'], $tamu['bulanLaluSamaPeriode'])" delta-label="vs periode sama bulan lalu" />
             <x-dk.stat-tile dark icon="globe" label="Pengunjung web hari ini" :value="$web['hariIni']" :delta="StatistikService::pct($web['hariIni'], $web['kemarinSamaJam'])" delta-label="vs jam yang sama kemarin" />
             <x-dk.stat-tile dark icon="monitor-smartphone" label="Total pengunjung web" :value="$web['total']" :caption="'sejak '.$web['sejak']" />
         </div>
 
-        <div class="dk-statsec__panel">
+        <div class="dk-statsec__panel" data-aos="fade-up" data-aos-delay="100">
             <div class="dk-statsec__chart">
                 <div class="dk-statsec__filters">
                     <div class="dk-seg" role="tablist" aria-label="Sumber data">

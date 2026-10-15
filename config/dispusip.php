@@ -24,6 +24,21 @@ return [
 
     'jenis_kelamin' => ['Laki-laki', 'Perempuan'],
 
+    // Ikon pilihan "Datang sebagai" dan "Keperluan" di buku tamu, menurut labelnya. Label tanpa ikon tampil tanpa ikon.
+    'ikon_pilihan_tamu' => [
+        'Pelajar' => 'school',
+        'Mahasiswa' => 'graduation-cap',
+        'Umum' => 'user-round',
+        'ASN / Instansi' => 'landmark',
+        'Peneliti' => 'search',
+        'Membaca di tempat' => 'book-open',
+        'Meminjam atau mengembalikan buku' => 'book-copy',
+        'Penelusuran arsip' => 'archive',
+        'Kunjungan rombongan' => 'bus',
+        'Mendaftar anggota' => 'id-card',
+        'Lainnya' => 'ellipsis',
+    ],
+
     'kode' => [
         // Percobaan kode yang salah sebelum pengisi harus menunggu.
         'max_attempts' => 5,

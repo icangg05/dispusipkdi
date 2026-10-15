@@ -9,7 +9,7 @@
     'as' => 'h2',
     'id' => null,
 ])
-<div {{ $attributes->class(['dk-sh', 'dk-sh--'.$align, 'dk-sh--dark' => $dark]) }}>
+<div {{ $attributes->merge(['data-aos' => 'fade-up'])->class(['dk-sh', 'dk-sh--'.$align, 'dk-sh--dark' => $dark]) }}>
     <div class="dk-sh__main">
         @if ($eyebrow)
             <x-dk.eyebrow :icon="$eyebrowIcon" :dark="$dark">{{ $eyebrow }}</x-dk.eyebrow>
