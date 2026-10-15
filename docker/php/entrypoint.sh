@@ -51,4 +51,9 @@ if [ ! -L public/storage ]; then
     php artisan storage:link --no-interaction || true
 fi
 
+# Production (compose.prod.yml): cache config, routes, views and events once the .env is in place.
+if [ "${OPTIMIZE_ON_START:-false}" = "true" ]; then
+    php artisan optimize --no-interaction
+fi
+
 exec "$@"

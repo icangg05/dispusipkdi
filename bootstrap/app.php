@@ -19,6 +19,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'kios' => EnsureKioskDevice::class,
         ]);
 
+        // In production the app sits behind nginx on the host, which terminates HTTPS; trust its X-Forwarded-*
+        // headers so URLs, secure cookies and visitor IPs are right. The app port is bound to 127.0.0.1 only.
+        $middleware->trustProxies(at: '*');
+
         $middleware->redirectGuestsTo(fn () => route('admin.login'));
         $middleware->redirectUsersTo(fn () => route('admin.dashboard'));
     })

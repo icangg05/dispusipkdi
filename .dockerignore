@@ -1,4 +1,10 @@
 .git
+.github
+.claude
+.env
+.env.backup
+.env.production
+.phpunit.result.cache
 node_modules
 vendor
 public/build
@@ -7,3 +13,8 @@ storage/logs/*
 storage/framework/cache/*
 storage/framework/sessions/*
 storage/framework/views/*
+storage/app/public/*
+storage/app/private/*
+storage/app/livewire-tmp
+storage/app/.seeded
+storage/framework/testing
