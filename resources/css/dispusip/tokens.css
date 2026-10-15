@@ -1,0 +1,111 @@
+/* Dispusip Kota Kendari — design tokens, generated from the design system's tokens.json. */
+
+:root {
+  /* Warna — tema Terang */
+  --surface: #f7f4ec;
+  --surface-raised: #ffffff;
+  --surface-sunken: #efeadf;
+  --line: #e2dccd;
+  --line-control: #7d8d90;
+  --ink: #13292d;
+  --ink-muted: #4f6266;
+  --laut-900: #06292e;
+  --laut-800: #0a3d44;
+  --laut-700: #0e5a63;
+  --laut-600: #137480;
+  --laut-100: #d9eeec;
+  --laut-50: #edf6f5;
+  --on-laut: #ffffff;
+  --on-laut-muted: #a9d6d4;
+  --lentera-500: #f2b33d;
+  --lentera-700: #8a5a00;
+  --lentera-100: #fcefd3;
+  --on-lentera: #2b1e00;
+  --daun-700: #2e6a45;
+  --daun-100: #dff0e4;
+  --terakota-700: #a4471f;
+  --terakota-100: #f8e4da;
+  --success: #1e7046;
+  --success-100: #ddf2e6;
+  --danger: #b3261e;
+  --danger-100: #fbe4e2;
+  --success-on-dark: #5fd39a;
+  --danger-on-dark: #ff9b8f;
+  --scrim: #06292eb3;
+  --scrim-soft: #06292e1f;
+  --glass: #ffffff1f;
+  --whatsapp: #25d366;
+  --link: var(--laut-700);
+
+  /* Ruang */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+
+  /* Sudut */
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-full: 9999px;
+
+  /* Bayangan dan fokus */
+  --shadow-sm: 0 1px 2px #13292d0f, 0 2px 6px #13292d0d;
+  --shadow-md: 0 6px 14px #13292d0f, 0 16px 32px -8px #13292d24;
+  --shadow-lg: 0 24px 56px -16px #06292e4d;
+  --focus-ring: 0 0 0 2px #ffffff, 0 0 0 4px #0e5a63;
+  --focus-ring-dark: 0 0 0 2px #0a3d44, 0 0 0 4px #f2b33d;
+
+  /* Tata letak */
+  --container: 1200px;
+  --container-narrow: 760px;
+  --nav-height: 72px;
+  --hero-height: 720px;
+}
+
+/* Kontras tinggi — dipasang oleh menu aksesibilitas lewat data-theme="kontras" pada <html>. */
+:root[data-theme="kontras"] {
+  --surface: #ffffff;
+  --surface-sunken: #f0f0f0;
+  --line: #595959;
+  --line-control: #1a1a1a;
+  --ink: #000000;
+  --ink-muted: #262626;
+  --laut-900: #001518;
+  --laut-800: #00262b;
+  --laut-700: #003f46;
+  --laut-600: #004d55;
+  --laut-100: #e3f2f1;
+  --laut-50: #f2f9f8;
+  --on-laut-muted: #e6f6f5;
+  --lentera-500: #ffd166;
+  --lentera-700: #5c3b00;
+  --lentera-100: #fff3d1;
+  --on-lentera: #000000;
+  --daun-700: #1a4a2c;
+  --daun-100: #e6f4ea;
+  --terakota-700: #6b260c;
+  --terakota-100: #fbe9e1;
+  --success: #0d4a2b;
+  --success-100: #e3f5ea;
+  --danger: #7f1610;
+  --danger-100: #fde8e6;
+  --success-on-dark: #9af5c6;
+  --danger-on-dark: #ffc4bc;
+  --scrim: #000000d9;
+  --scrim-soft: #00000033;
+  --glass: #000000a6;
+  --shadow-sm: 0 0 0 1px #595959;
+  --shadow-md: 0 0 0 2px #1a1a1a;
+  --shadow-lg: 0 0 0 2px #000000, 0 16px 40px -12px #00000080;
+  --focus-ring: 0 0 0 2px #ffffff, 0 0 0 5px #000000;
+  --focus-ring-dark: 0 0 0 2px #00262b, 0 0 0 5px #ffd166;
+}
