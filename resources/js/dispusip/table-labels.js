@@ -30,7 +30,7 @@ function label(table) {
 
 function run() {
     queued = false;
-    document.querySelectorAll('.ad-table').forEach(label);
+    document.querySelectorAll('.pnl-table').forEach(label);
 }
 
 function queue() {

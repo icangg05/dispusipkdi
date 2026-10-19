@@ -80,32 +80,32 @@ new #[Layout('layouts::admin')] #[Title('Tanya jawab')] class extends Component
 };
 ?>
 
-<div class="ad-grid" style="gap: var(--space-6)">
-    <div class="ad-pagehead">
+<div class="pnl-grid" style="gap: var(--space-6)">
+    <div class="pnl-pagehead">
         <div>
             <h1>Tanya jawab</h1>
             <p>Daftar <em>Yang sering ditanyakan</em> di Beranda dan halaman Kontak. Tulis pertanyaan seperti yang diucapkan warga; jawab langsung dalam 1 sampai 3 kalimat.</p>
         </div>
-        <div class="ad-pagehead__actions"><x-dk.button variant="primary" icon="plus" wire:click="tambah">Tambah tanya jawab</x-dk.button></div>
+        <div class="pnl-pagehead__actions"><x-dk.button variant="primary" icon="plus" wire:click="tambah">Tambah tanya jawab</x-dk.button></div>
     </div>
 
-    <div class="ad-card">
+    <div class="pnl-card">
         @if ($faqs->isEmpty())
             <x-ad.empty icon="message-circle" title="Belum ada tanya jawab" />
         @else
-            <div class="ad-tablewrap">
-                <table class="ad-table">
+            <div class="pnl-tablewrap">
+                <table class="pnl-table">
                     <thead><tr><th>Urutan</th><th>Pertanyaan &amp; jawaban</th><th>Status</th><th><span class="dk-sr">Aksi</span></th></tr></thead>
                     <tbody>
                         @foreach ($faqs as $faq)
                             <tr wire:key="faq-{{ $faq->id }}">
                                 <td><x-ad.sort-buttons :id="$faq->id" :first="$loop->first" :last="$loop->last" /></td>
                                 <td class="max-w-[640px]"><strong>{{ $faq->question }}</strong><small class="line-clamp-2">{{ $faq->answer }}</small></td>
-                                <td><span @class(['ad-tag', 'ad-tag--on' => $faq->is_active])>{{ $faq->is_active ? 'Tampil' : 'Disembunyikan' }}</span></td>
+                                <td><span @class(['pnl-tag', 'pnl-tag--on' => $faq->is_active])>{{ $faq->is_active ? 'Tampil' : 'Disembunyikan' }}</span></td>
                                 <td>
-                                    <div class="ad-actions">
+                                    <div class="pnl-actions">
                                         <button type="button" class="dk-iconbtn" wire:click="ubah({{ $faq->id }})" aria-label="Ubah"><x-dk.icon name="pencil" :size="17" /></button>
-                                        <button type="button" class="dk-iconbtn ad-iconbtn--danger" wire:click="hapus({{ $faq->id }})" wire:confirm="Hapus tanya jawab ini?" aria-label="Hapus"><x-dk.icon name="trash-2" :size="17" /></button>
+                                        <button type="button" class="dk-iconbtn pnl-iconbtn--danger" wire:click="hapus({{ $faq->id }})" wire:confirm="Hapus tanya jawab ini?" aria-label="Hapus"><x-dk.icon name="trash-2" :size="17" /></button>
                                     </div>
                                 </td>
                             </tr>
@@ -118,9 +118,9 @@ new #[Layout('layouts::admin')] #[Title('Tanya jawab')] class extends Component
 
     @if ($showForm)
         <x-ad.modal :title="$editId ? 'Ubah tanya jawab' : 'Tambah tanya jawab'">
-            <form id="form-faq" class="ad-form" wire:submit="simpan">
-                <x-ad.field label="Pertanyaan" for="question" error="question"><input id="question" class="ad-input" wire:model="question" maxlength="255" placeholder="Contoh: Apakah meminjam buku dikenakan biaya?"></x-ad.field>
-                <x-ad.field label="Jawaban" for="answer" error="answer"><textarea id="answer" class="ad-textarea" rows="4" wire:model="answer" maxlength="2000"></textarea></x-ad.field>
+            <form id="form-faq" class="pnl-form" wire:submit="simpan">
+                <x-ad.field label="Pertanyaan" for="question" error="question"><input id="question" class="pnl-input" wire:model="question" maxlength="255" placeholder="Contoh: Apakah meminjam buku dikenakan biaya?"></x-ad.field>
+                <x-ad.field label="Jawaban" for="answer" error="answer"><textarea id="answer" class="pnl-textarea" rows="4" wire:model="answer" maxlength="2000"></textarea></x-ad.field>
                 <x-ad.check model="is_active">Tampilkan di situs</x-ad.check>
             </form>
             <x-slot:footer>

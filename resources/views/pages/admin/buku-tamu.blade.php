@@ -111,29 +111,29 @@ new #[Layout('layouts::admin')] #[Title('Buku tamu')] class extends Component
 };
 ?>
 
-<div class="ad-grid" style="gap: var(--space-6)">
-    <div class="ad-pagehead">
+<div class="pnl-grid" style="gap: var(--space-6)">
+    <div class="pnl-pagehead">
         <div>
             <h1>Buku tamu</h1>
             <p>Semua lembar yang diisi pengunjung dari website maupun tablet meja layanan. Foto tamu hanya dapat dilihat di sini.</p>
         </div>
-        <div class="ad-pagehead__actions">
+        <div class="pnl-pagehead__actions">
             <x-dk.button variant="secondary" icon="download" :href="route('admin.buku-tamu.ekspor', ['dari' => $dari, 'sampai' => $sampai, 'kategori' => $kategori ?: null])">Unduh CSV</x-dk.button>
             <x-dk.button variant="secondary" icon="key-round" :href="route('admin.kode')" wire:navigate>Kode kunjungan</x-dk.button>
         </div>
     </div>
 
-    <div class="ad-card">
-        <div class="ad-toolbar">
-            <x-ad.field label="Dari tanggal" for="dari"><input id="dari" type="date" class="ad-input ad-input--sm" wire:model.live="dari" max="{{ today()->toDateString() }}"></x-ad.field>
-            <x-ad.field label="Sampai tanggal" for="sampai"><input id="sampai" type="date" class="ad-input ad-input--sm" wire:model.live="sampai" max="{{ today()->toDateString() }}"></x-ad.field>
+    <div class="pnl-card">
+        <div class="pnl-toolbar">
+            <x-ad.field label="Dari tanggal" for="dari"><input id="dari" type="date" class="pnl-input pnl-input--sm" wire:model.live="dari" max="{{ today()->toDateString() }}"></x-ad.field>
+            <x-ad.field label="Sampai tanggal" for="sampai"><input id="sampai" type="date" class="pnl-input pnl-input--sm" wire:model.live="sampai" max="{{ today()->toDateString() }}"></x-ad.field>
             <x-ad.field label="Datang sebagai" for="kategori">
-                <select id="kategori" class="ad-select ad-select--sm" wire:model.live="kategori">
+                <select id="kategori" class="pnl-select pnl-select--sm" wire:model.live="kategori">
                     <option value="">Semua</option>
                     @foreach ($kategoriList as $k)<option value="{{ $k }}">{{ $k }}</option>@endforeach
                 </select>
             </x-ad.field>
-            <x-ad.field label="Cari nama atau asal" for="cari" class="ad-field--grow"><input id="cari" type="search" class="ad-input ad-input--sm" wire:model.live.debounce.400ms="cari" placeholder="Nama tamu, sekolah, instansi…"></x-ad.field>
+            <x-ad.field label="Cari nama atau asal" for="cari" class="pnl-field--grow"><input id="cari" type="search" class="pnl-input pnl-input--sm" wire:model.live.debounce.400ms="cari" placeholder="Nama tamu, sekolah, instansi…"></x-ad.field>
             <div class="flex flex-wrap gap-1">
                 @foreach (['hari' => 'Hari ini', 'kemarin' => 'Kemarin', 'minggu' => '7 hari', 'bulan' => 'Bulan ini'] as $key => $label)
                     <x-dk.button variant="ghost" size="sm" wire:click="rentang('{{ $key }}')">{{ $label }}</x-dk.button>
@@ -148,8 +148,8 @@ new #[Layout('layouts::admin')] #[Title('Buku tamu')] class extends Component
         @if ($guests->isEmpty())
             <x-ad.empty icon="notebook-pen" title="Tidak ada tamu pada rentang ini" text="Ubah tanggal atau kata pencarian." />
         @else
-            <div class="ad-tablewrap" wire:loading.class="opacity-60">
-                <table class="ad-table">
+            <div class="pnl-tablewrap" wire:loading.class="opacity-60">
+                <table class="pnl-table">
                     <thead>
                         <tr><th>No.</th><th>Waktu</th><th>Tamu</th><th>Datang sebagai</th><th>Keperluan</th><th class="num">Orang</th><th>Sumber</th><th><span class="dk-sr">Aksi</span></th></tr>
                     </thead>
@@ -161,9 +161,9 @@ new #[Layout('layouts::admin')] #[Title('Buku tamu')] class extends Component
                                 <td>
                                     <div class="flex items-center gap-3">
                                         @if ($guest->foto)
-                                            <img class="ad-thumb ad-thumb--portrait" src="{{ route('admin.buku-tamu.foto', $guest) }}" alt="" loading="lazy">
+                                            <img class="pnl-thumb pnl-thumb--portrait" src="{{ route('admin.buku-tamu.foto', $guest) }}" alt="" loading="lazy">
                                         @else
-                                            <span class="ad-thumb ad-thumb--portrait grid place-items-center text-ink-muted"><x-dk.icon name="image-off" :size="16" /></span>
+                                            <span class="pnl-thumb pnl-thumb--portrait grid place-items-center text-ink-muted"><x-dk.icon name="image-off" :size="16" /></span>
                                         @endif
                                         <span><strong>{{ $guest->nama }}</strong><small>{{ $guest->asal ?: '—' }}</small></span>
                                     </div>
@@ -171,9 +171,9 @@ new #[Layout('layouts::admin')] #[Title('Buku tamu')] class extends Component
                                 <td>{{ $guest->kategori }}</td>
                                 <td>{{ $guest->keperluan }}</td>
                                 <td class="num">{{ $guest->jumlah }}</td>
-                                <td><span @class(['ad-tag', 'ad-tag--on' => $guest->sumber === 'kios'])>{{ $guest->sumber === 'kios' ? 'Kios' : 'Web' }}</span></td>
+                                <td><span @class(['pnl-tag', 'pnl-tag--on' => $guest->sumber === 'kios'])>{{ $guest->sumber === 'kios' ? 'Kios' : 'Web' }}</span></td>
                                 <td>
-                                    <div class="ad-actions">
+                                    <div class="pnl-actions">
                                         <button type="button" class="dk-iconbtn" wire:click="buka({{ $guest->id }})" aria-label="Lihat {{ $guest->nama }}"><x-dk.icon name="eye" :size="18" /></button>
                                     </div>
                                 </td>
@@ -182,21 +182,21 @@ new #[Layout('layouts::admin')] #[Title('Buku tamu')] class extends Component
                     </tbody>
                 </table>
             </div>
-            <div class="ad-pager">{{ $guests->links() }}</div>
+            <div class="pnl-pager">{{ $guests->links() }}</div>
         @endif
     </div>
 
     @if ($detail)
         <x-ad.modal title="Tamu no. {{ $detail->nomorLabel() }} · {{ \App\Support\Format::shortDate($detail->visit_date) }}" size="wide">
             <div class="grid gap-6 md:grid-cols-[220px_minmax(0,1fr)]">
-                <div class="ad-photo">
+                <div class="pnl-photo">
                     @if ($detail->foto)
                         <img src="{{ route('admin.buku-tamu.foto', $detail) }}" alt="Foto {{ $detail->nama }}">
                     @else
                         <span class="grid justify-items-center gap-2 text-[13px]"><x-dk.icon name="image-off" :size="28" /> Tanpa foto</span>
                     @endif
                 </div>
-                <dl class="ad-kv">
+                <dl class="pnl-kv">
                     <dt>Nama</dt><dd>{{ $detail->nama }}</dd>
                     <dt>Asal</dt><dd>{{ $detail->asal ?: '—' }}</dd>
                     <dt>Datang sebagai</dt><dd>{{ $detail->kategori }}</dd>

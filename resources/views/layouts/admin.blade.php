@@ -31,64 +31,64 @@
 </head>
 <body>
     <a class="dk-skip" href="#konten">Langsung ke konten</a>
-    <div class="ad-shell" x-data="{ side: false }" @keydown.escape.window="side = false">
-        <aside class="ad-side" :class="{ 'is-open': side }" aria-label="Menu admin">
+    <div class="pnl-shell" x-data="{ side: false }" @keydown.escape.window="side = false">
+        <aside class="pnl-side" :class="{ 'is-open': side }" aria-label="Menu admin">
             <x-dk.brand dark />
-            <nav class="ad-nav" aria-label="Menu admin">
+            <nav class="pnl-nav" aria-label="Menu admin">
                 @foreach ($menu as $group => $items)
-                    <span class="ad-nav__label">{{ $group }}</span>
+                    <span class="pnl-nav__label">{{ $group }}</span>
                     @foreach ($items as $item)
                         @php($active = request()->routeIs($item['active']))
-                        <a href="{{ route($item['route']) }}" @class(['ad-nav__link', 'is-active' => $active]) @if ($active) aria-current="page" @endif wire:navigate>
+                        <a href="{{ route($item['route']) }}" @class(['pnl-nav__link', 'is-active' => $active]) @if ($active) aria-current="page" @endif wire:navigate>
                             <x-dk.icon :name="$item['icon']" :size="18" />
                             <span>{{ $item['label'] }}</span>
                             @if (! empty($item['count']))
-                                <span class="ad-nav__count" aria-label="{{ $item['count'] }} baru">{{ $item['count'] }}</span>
+                                <span class="pnl-nav__count" aria-label="{{ $item['count'] }} baru">{{ $item['count'] }}</span>
                             @endif
                         </a>
                     @endforeach
                 @endforeach
             </nav>
-            <div class="ad-side__foot">
-                <div class="ad-user">
-                    <span class="ad-user__avatar" aria-hidden="true">{{ $initials }}</span>
-                    <span class="ad-user__text"><strong>{{ $user->name }}</strong><small>{{ $user->email }}</small></span>
+            <div class="pnl-side__foot">
+                <div class="pnl-user">
+                    <span class="pnl-user__avatar" aria-hidden="true">{{ $initials }}</span>
+                    <span class="pnl-user__text"><strong>{{ $user->name }}</strong><small>{{ $user->email }}</small></span>
                 </div>
                 <form method="POST" action="{{ route('admin.logout') }}">
                     @csrf
-                    <button type="submit" class="ad-nav__link w-full cursor-pointer border-0 bg-transparent text-left">
+                    <button type="submit" class="pnl-nav__link w-full cursor-pointer border-0 bg-transparent text-left">
                         <x-dk.icon name="log-out" :size="18" /> <span>Keluar</span>
                     </button>
                 </form>
             </div>
         </aside>
-        <div class="ad-backdrop" :class="{ 'is-open': side }" @click="side = false"></div>
+        <div class="pnl-backdrop" :class="{ 'is-open': side }" @click="side = false"></div>
 
-        <div class="ad-main">
-            <header class="ad-top">
-                <button type="button" class="dk-iconbtn ad-burger" @click="side = true" aria-label="Buka menu admin"><x-dk.icon name="menu" /></button>
-                <div class="ad-top__crumb">
+        <div class="pnl-main">
+            <header class="pnl-top">
+                <button type="button" class="dk-iconbtn pnl-burger" @click="side = true" aria-label="Buka menu admin"><x-dk.icon name="menu" /></button>
+                <div class="pnl-top__crumb">
                     <span>Admin</span>
                     <x-dk.icon name="chevron-right" :size="14" />
                     <strong>{{ $title ?? 'Dasbor' }}</strong>
                 </div>
-                <div class="ad-top__end">
+                <div class="pnl-top__end">
                     <x-dk.button variant="ghost" size="sm" icon="external-link" :href="route('beranda')" target="_blank" rel="noopener"><span class="dk-hide-sm">Lihat situs</span></x-dk.button>
                 </div>
             </header>
-            <main class="ad-content" id="konten">
+            <main class="pnl-content" id="konten">
                 {{ $slot }}
             </main>
         </div>
     </div>
 
     @if (session('status'))
-        <div class="ad-toast" role="status" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)">
+        <div class="pnl-toast" role="status" x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 4000)">
             <x-dk.icon name="circle-check" :size="18" /> {{ session('status') }}
         </div>
     @endif
     <div x-data="{ show: false, text: '' }" x-on:toast.window="text = $event.detail.message ?? $event.detail[0]?.message ?? ''; show = true; clearTimeout(window.__toast); window.__toast = setTimeout(() => show = false, 4000)">
-        <div class="ad-toast" role="status" x-show="show" x-cloak>
+        <div class="pnl-toast" role="status" x-show="show" x-cloak>
             <x-dk.icon name="circle-check" :size="18" /> <span x-text="text"></span>
         </div>
     </div>

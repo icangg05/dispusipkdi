@@ -129,13 +129,13 @@ new #[Layout('layouts::admin')] class extends Component
 };
 ?>
 
-<form class="ad-grid" style="gap: var(--space-6)" wire:submit="simpan">
-    <div class="ad-pagehead">
+<form class="pnl-grid" style="gap: var(--space-6)" wire:submit="simpan">
+    <div class="pnl-pagehead">
         <div>
             <h1>{{ $post ? 'Ubah berita' : 'Tulis berita' }}</h1>
             <p>Judul dan isi ditulis dengan huruf kalimat. Isi mendukung format Markdown sederhana.</p>
         </div>
-        <div class="ad-pagehead__actions">
+        <div class="pnl-pagehead__actions">
             <x-dk.button variant="ghost" icon="arrow-left" :href="route('admin.berita.index')" wire:navigate>Kembali</x-dk.button>
             @if ($post?->isVisible())
                 <x-dk.button variant="secondary" icon="external-link" :href="route('berita.show', $post)" target="_blank">Lihat di situs</x-dk.button>
@@ -144,21 +144,21 @@ new #[Layout('layouts::admin')] class extends Component
         </div>
     </div>
 
-    <div class="ad-grid ad-grid--main">
-        <div class="ad-card">
-            <div class="ad-card__body ad-form">
+    <div class="pnl-grid pnl-grid--main">
+        <div class="pnl-card">
+            <div class="pnl-card__body pnl-form">
                 <x-ad.field label="Judul" for="title" error="title">
-                    <input id="title" class="ad-input text-[18px] font-bold" wire:model.blur="title" maxlength="200" placeholder="Contoh: Jadwal layanan selama libur akhir tahun">
+                    <input id="title" class="pnl-input text-[18px] font-bold" wire:model.blur="title" maxlength="200" placeholder="Contoh: Jadwal layanan selama libur akhir tahun">
                 </x-ad.field>
                 <x-ad.field label="Alamat halaman" for="slug" error="slug" help="{{ url('/berita') }}/<strong>{{ $slug ?: 'judul-berita' }}</strong>">
-                    <input id="slug" class="ad-input ad-input--sm font-mono" wire:model.blur="slug" maxlength="220">
+                    <input id="slug" class="pnl-input pnl-input--sm font-mono" wire:model.blur="slug" maxlength="220">
                 </x-ad.field>
                 <x-ad.field label="Ringkasan" for="excerpt" error="excerpt" optional help="Satu atau dua kalimat yang tampil di kartu berita dan sebagai pembuka artikel.">
-                    <textarea id="excerpt" class="ad-textarea" rows="3" maxlength="300" wire:model="excerpt"></textarea>
+                    <textarea id="excerpt" class="pnl-textarea" rows="3" maxlength="300" wire:model="excerpt"></textarea>
                 </x-ad.field>
-                <div class="ad-field {{ $errors->has('body') ? 'has-error' : '' }}">
+                <div class="pnl-field {{ $errors->has('body') ? 'has-error' : '' }}">
                     <div class="flex items-center justify-between gap-3">
-                        <label class="ad-label" for="body">Isi berita</label>
+                        <label class="pnl-label" for="body">Isi berita</label>
                         <div class="dk-tabs !mb-0" role="tablist">
                             <button type="button" role="tab" @class(['dk-tab', 'is-active' => ! $pratinjau]) wire:click="$set('pratinjau', false)">Tulis</button>
                             <button type="button" role="tab" @class(['dk-tab', 'is-active' => $pratinjau]) wire:click="$set('pratinjau', true)">Pratinjau</button>
@@ -167,34 +167,34 @@ new #[Layout('layouts::admin')] class extends Component
                     @if ($pratinjau)
                         <div class="dk-prose min-h-[340px] rounded-sm border border-line bg-surface p-5">{!! $html ?: '<p class="text-ink-muted">Belum ada isi.</p>' !!}</div>
                     @else
-                        <textarea id="body" class="ad-textarea ad-textarea--tall" wire:model="body" placeholder="Tulis isi berita di sini…"></textarea>
+                        <textarea id="body" class="pnl-textarea pnl-textarea--tall" wire:model="body" placeholder="Tulis isi berita di sini…"></textarea>
                     @endif
-                    <span class="ad-help">Format: <code>## Subjudul</code>, <code>**tebal**</code>, <code>*miring*</code>, <code>- daftar</code>, <code>1. daftar bernomor</code>, <code>[teks](https://tautan)</code>, <code>&gt; kutipan</code>. Pisahkan paragraf dengan baris kosong.</span>
-                    @error('body')<span class="ad-error"><x-dk.icon name="circle-alert" :size="15" /> {{ $message }}</span>@enderror
+                    <span class="pnl-help">Format: <code>## Subjudul</code>, <code>**tebal**</code>, <code>*miring*</code>, <code>- daftar</code>, <code>1. daftar bernomor</code>, <code>[teks](https://tautan)</code>, <code>&gt; kutipan</code>. Pisahkan paragraf dengan baris kosong.</span>
+                    @error('body')<span class="pnl-error"><x-dk.icon name="circle-alert" :size="15" /> {{ $message }}</span>@enderror
                 </div>
             </div>
         </div>
 
-        <div class="ad-grid" style="align-content: start">
-            <div class="ad-card">
-                <div class="ad-card__head"><h2 class="ad-card__title"><x-dk.icon name="send" :size="18" /> Terbitkan</h2></div>
-                <div class="ad-card__body ad-form">
+        <div class="pnl-grid" style="align-content: start">
+            <div class="pnl-card">
+                <div class="pnl-card__head"><h2 class="pnl-card__title"><x-dk.icon name="send" :size="18" /> Terbitkan</h2></div>
+                <div class="pnl-card__body pnl-form">
                     <x-ad.check model="is_published" live>Tampilkan di situs</x-ad.check>
                     <x-ad.field label="Tanggal terbit" for="published_at" error="published_at" help="Tanggal di masa depan membuat berita terjadwal.">
-                        <input id="published_at" type="datetime-local" class="ad-input" wire:model="published_at">
+                        <input id="published_at" type="datetime-local" class="pnl-input" wire:model="published_at">
                     </x-ad.field>
                     <x-ad.field label="Penulis" for="author" error="author" optional>
-                        <input id="author" class="ad-input" wire:model="author" maxlength="80" placeholder="Contoh: Bidang Layanan">
+                        <input id="author" class="pnl-input" wire:model="author" maxlength="80" placeholder="Contoh: Bidang Layanan">
                     </x-ad.field>
                 </div>
             </div>
-            <div class="ad-card">
-                <div class="ad-card__head"><h2 class="ad-card__title"><x-dk.icon name="tag" :size="18" /> Kategori</h2></div>
-                <div class="ad-card__body">
+            <div class="pnl-card">
+                <div class="pnl-card__head"><h2 class="pnl-card__title"><x-dk.icon name="tag" :size="18" /> Kategori</h2></div>
+                <div class="pnl-card__body">
                     <x-ad.field error="category_id">
                         <div class="grid gap-2">
                             @foreach ($categories as $category)
-                                <label class="ad-check" wire:key="cat-{{ $category->id }}">
+                                <label class="pnl-check" wire:key="cat-{{ $category->id }}">
                                     <input type="radio" name="category_id" value="{{ $category->id }}" wire:model="category_id">
                                     <span class="dk-tick__box" aria-hidden="true"><x-dk.icon name="check" :size="16" :stroke="3" /></span>
                                     <x-dk.badge :category="$category" />
@@ -202,12 +202,12 @@ new #[Layout('layouts::admin')] class extends Component
                             @endforeach
                         </div>
                     </x-ad.field>
-                    <a class="ad-help mt-3 inline-block underline" href="{{ route('admin.kategori') }}" wire:navigate>Kelola kategori</a>
+                    <a class="pnl-help mt-3 inline-block underline" href="{{ route('admin.kategori') }}" wire:navigate>Kelola kategori</a>
                 </div>
             </div>
-            <div class="ad-card">
-                <div class="ad-card__head"><h2 class="ad-card__title"><x-dk.icon name="image" :size="18" /> Gambar utama</h2></div>
-                <div class="ad-card__body ad-form">
+            <div class="pnl-card">
+                <div class="pnl-card__head"><h2 class="pnl-card__title"><x-dk.icon name="image" :size="18" /> Gambar utama</h2></div>
+                <div class="pnl-card__body pnl-form">
                     <x-ad.field error="gambar" help="Rasio 16:9 terlihat paling baik, misalnya 1600×900.">
                         <x-ad.image-upload model="gambar" :file="$gambar" :current="$hapusGambar ? null : $post?->image_url">
                             @if ($post?->image && ! $gambar)

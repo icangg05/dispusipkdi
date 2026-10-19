@@ -42,7 +42,7 @@ new class extends Component
     /** @var TemporaryUploadedFile|null */
     public $foto = null;
 
-    /** @var array{nama: string, nomor: int, tanggal: string, id: int, foto: bool}|null */
+    /** @var array{nama: string, nomor: int, tanggal: string, jam: string, id: int, foto: bool}|null */
     #[Locked]
     public ?array $tercatat = null;
 
@@ -128,7 +128,8 @@ new class extends Component
             'id' => $guest->id,
             'nama' => Format::givenName($guest->nama),
             'nomor' => $guest->nomor,
-            'tanggal' => mb_strtoupper(Format::shortDate($guest->visit_date)),
+            'tanggal' => Format::shortDate($guest->visit_date),
+            'jam' => (string) $guest->created_at?->format('H.i'),
             'foto' => (bool) $guest->foto,
         ];
 
@@ -170,7 +171,7 @@ new class extends Component
 <div class="dk-gbwrap">
     @if ($tercatat)
         <div @class(['dk-form', 'dk-form--gb', 'dk-form--kiosk' => $isKioskVariant]) role="status"
-            @if ($isKioskVariant) x-data x-init="setTimeout(() => $wire.ulang(), 30000)" @endif>
+            x-data="guestbookDone({ resetAfter: {{ $isKioskVariant ? 30000 : 0 }} })">
             <header class="dk-form__head">
                 <span class="dk-form__mark" aria-hidden="true"><x-dk.icon name="notebook-pen" :size="22" /></span>
                 <div class="dk-form__titles">
@@ -180,18 +181,20 @@ new class extends Component
                 <span class="dk-form__pill dk-form__pill--ok"><x-dk.icon name="circle-check" :size="13" /> Tercatat</span>
             </header>
             <div class="dk-form__body dk-form__done">
-                <div class="dk-gb__stamped">
-                    <div class="dk-stamp" aria-hidden="true">
-                        <span class="dk-stamp__big">Tercatat</span>
-                        <span class="dk-stamp__line">{{ $tercatat['tanggal'] }}</span>
-                        <span class="dk-stamp__line">Tamu no. {{ $nomorLabel }}</span>
-                    </div>
+                <div class="dk-gbok">
                     @if ($tercatat['foto'])
-                        <div class="dk-gb__pinned"><img src="{{ route('buku-tamu.foto-saya', $tercatat['id']) }}" alt="Foto Anda pada lembar buku tamu"></div>
+                        <span class="dk-gbok__foto"><img src="{{ route('buku-tamu.foto-saya', $tercatat['id']) }}" alt="Foto Anda pada lembar buku tamu"></span>
+                    @else
+                        <span class="dk-gbok__mark" aria-hidden="true"><x-dk.icon name="check" :size="24" :stroke="3" /></span>
                     @endif
+                    <span class="dk-gbok__info">
+                        <span class="dk-gbok__k">Nomor tamu hari ini</span>
+                        <span class="dk-gbok__no">{{ $nomorLabel }}</span>
+                        <span class="dk-gbok__when">{{ $tercatat['tanggal'] }}, pukul {{ $tercatat['jam'] }} WITA</span>
+                    </span>
                 </div>
                 <p class="dk-form__thanks">Terima kasih, {{ $tercatat['nama'] }}.</p>
-                <p class="dk-form__note">Kunjungan Anda tercatat sebagai tamu nomor <strong>{{ $tercatat['nomor'] }}</strong> hari ini. Selamat membaca.</p>
+                <p class="dk-form__note">Kunjungan Anda sudah tercatat di buku tamu hari ini. Selamat membaca.</p>
                 <x-dk.button variant="secondary" icon="user-plus" wire:click="ulang">Isi untuk tamu berikutnya</x-dk.button>
             </div>
         </div>

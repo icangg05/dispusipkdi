@@ -49,21 +49,21 @@ new #[Layout('layouts::admin')] #[Title('Kode kunjungan')] class extends Compone
 };
 ?>
 
-<div class="ad-grid" style="gap: var(--space-6)">
-    <div class="ad-pagehead">
+<div class="pnl-grid" style="gap: var(--space-6)">
+    <div class="pnl-pagehead">
         <div>
             <h1>Kode kunjungan</h1>
             <p>Buku tamu di website hanya bisa dikirim dengan kode 4 angka ini. Kode diacak otomatis setiap hari (WITA) dan dapat diganti kapan saja dari sini.</p>
         </div>
-        <div class="ad-pagehead__actions">
+        <div class="pnl-pagehead__actions">
             <x-dk.button variant="primary" icon="monitor" :href="route('admin.kode.layar')" target="_blank">Buka layar meja layanan</x-dk.button>
         </div>
     </div>
 
-    <div class="ad-grid ad-grid--main">
-        <div class="ad-codecard">
-            <span class="ad-codecard__k">Kode hari ini · {{ \App\Support\Format::longDate() }}</span>
-            <div class="ad-code ad-code--lg" aria-label="Kode {{ implode(' ', str_split($kode->code)) }}">
+    <div class="pnl-grid pnl-grid--main">
+        <div class="pnl-codecard">
+            <span class="pnl-codecard__k">Kode hari ini · {{ \App\Support\Format::longDate() }}</span>
+            <div class="pnl-code pnl-code--lg" aria-label="Kode {{ implode(' ', str_split($kode->code)) }}">
                 @foreach (str_split($kode->code) as $digit)
                     <span>{{ $digit }}</span>
                 @endforeach
@@ -81,24 +81,24 @@ new #[Layout('layouts::admin')] #[Title('Kode kunjungan')] class extends Compone
             </div>
         </div>
 
-        <div class="ad-card">
-            <div class="ad-card__head"><h2 class="ad-card__title"><x-dk.icon name="key-round" :size="18" /> Tetapkan kode sendiri</h2></div>
-            <form class="ad-card__body ad-form" wire:submit="simpanManual">
+        <div class="pnl-card">
+            <div class="pnl-card__head"><h2 class="pnl-card__title"><x-dk.icon name="key-round" :size="18" /> Tetapkan kode sendiri</h2></div>
+            <form class="pnl-card__body pnl-form" wire:submit="simpanManual">
                 <x-ad.field label="Kode 4 angka" for="kodeManual" error="kodeManual" help="Berlaku untuk hari ini saja. Besok sistem kembali mengacak kode baru.">
-                    <input id="kodeManual" class="ad-input max-w-[200px] text-center text-[22px] font-extrabold tracking-[.3em]" wire:model="kodeManual" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" autocomplete="off" placeholder="0000">
+                    <input id="kodeManual" class="pnl-input max-w-[200px] text-center text-[22px] font-extrabold tracking-[.3em]" wire:model="kodeManual" inputmode="numeric" maxlength="4" pattern="[0-9]{4}" autocomplete="off" placeholder="0000">
                 </x-ad.field>
                 <div><x-dk.button type="submit" variant="secondary" icon="save">Simpan kode</x-dk.button></div>
             </form>
         </div>
     </div>
 
-    <div class="ad-grid ad-grid--2">
-        <div class="ad-card">
-            <div class="ad-card__head"><h2 class="ad-card__title"><x-dk.icon name="tablet-smartphone" :size="18" /> Tablet meja layanan (mode kios)</h2></div>
-            <div class="ad-card__body grid gap-4">
+    <div class="pnl-grid pnl-grid--2">
+        <div class="pnl-card">
+            <div class="pnl-card__head"><h2 class="pnl-card__title"><x-dk.icon name="tablet-smartphone" :size="18" /> Tablet meja layanan (mode kios)</h2></div>
+            <div class="pnl-card__body grid gap-4">
                 <p class="m-0 text-[15px] leading-6 text-ink-muted">Jadikan tablet di meja layanan sebagai kios buku tamu layar penuh. Di perangkat kios, tamu tidak perlu memasukkan kode karena tabletnya sudah diaktifkan petugas.</p>
                 @if ($perangkatKios)
-                    <p class="m-0"><span class="ad-tag ad-tag--on"><x-dk.icon name="circle-check" :size="14" /> Perangkat ini adalah kios</span></p>
+                    <p class="m-0"><span class="pnl-tag pnl-tag--on"><x-dk.icon name="circle-check" :size="14" /> Perangkat ini adalah kios</span></p>
                     <div class="flex flex-wrap gap-2">
                         <x-dk.button variant="primary" icon="external-link" :href="route('kios')" wire:navigate>Buka mode kios</x-dk.button>
                         <form method="POST" action="{{ route('admin.kios.nonaktifkan') }}">@csrf<x-dk.button type="submit" variant="secondary" icon="circle-x">Matikan mode kios</x-dk.button></form>
@@ -108,20 +108,20 @@ new #[Layout('layouts::admin')] #[Title('Kode kunjungan')] class extends Compone
                         @csrf
                         <x-dk.button type="submit" variant="primary" icon="tablet-smartphone">Jadikan perangkat ini kios</x-dk.button>
                     </form>
-                    <p class="ad-help m-0">Lakukan dari tablet meja layanan. Demi keamanan, akun admin otomatis keluar di perangkat itu.</p>
+                    <p class="pnl-help m-0">Lakukan dari tablet meja layanan. Demi keamanan, akun admin otomatis keluar di perangkat itu.</p>
                 @endif
             </div>
         </div>
 
-        <div class="ad-card">
-            <div class="ad-card__head"><h2 class="ad-card__title"><x-dk.icon name="history" :size="18" /> Riwayat 14 hari</h2></div>
-            <div class="ad-tablewrap">
-                <table class="ad-table">
+        <div class="pnl-card">
+            <div class="pnl-card__head"><h2 class="pnl-card__title"><x-dk.icon name="history" :size="18" /> Riwayat 14 hari</h2></div>
+            <div class="pnl-tablewrap">
+                <table class="pnl-table">
                     <thead><tr><th>Tanggal</th><th>Kode</th><th class="num">Tamu</th><th>Diatur oleh</th></tr></thead>
                     <tbody>
                         @foreach ($riwayat as $row)
                             <tr wire:key="kode-{{ $row->id }}">
-                                <td>{{ \App\Support\Format::shortDate($row->date) }}@if ($row->date->isToday()) <span class="ad-tag ad-tag--new ml-1">Hari ini</span>@endif</td>
+                                <td>{{ \App\Support\Format::shortDate($row->date) }}@if ($row->date->isToday()) <span class="pnl-tag pnl-tag--new ml-1">Hari ini</span>@endif</td>
                                 <td class="font-extrabold tracking-[.2em] tabular-nums">{{ $row->code }}</td>
                                 <td class="num">{{ \App\Support\Format::number($jumlah[$row->date->toDateString()] ?? 0) }}</td>
                                 <td class="text-ink-muted">{{ $row->user?->name ?? 'Sistem' }}</td>

@@ -214,19 +214,19 @@ new #[Layout('layouts::admin')] #[Title('Pertanyaan')] class extends Component
 };
 ?>
 
-<div class="ad-grid" style="gap: var(--space-6)">
-    <div class="ad-pagehead">
+<div class="pnl-grid" style="gap: var(--space-6)">
+    <div class="pnl-pagehead">
         <div>
             <h1>Pertanyaan untuk pustakawan</h1>
             <p>Pertanyaan dari formulir <em>Ada pertanyaan?</em> di situs. Buka pertanyaan, pilih template, lalu kirim lewat WhatsApp. Pertanyaan otomatis ditandai sudah dijawab.</p>
         </div>
-        <div class="ad-pagehead__actions">
+        <div class="pnl-pagehead__actions">
             <x-dk.button variant="secondary" icon="message-square-text" wire:click="bukaTemplate">Template balasan</x-dk.button>
         </div>
     </div>
 
-    <div class="ad-card">
-        <div class="ad-toolbar">
+    <div class="pnl-card">
+        <div class="pnl-toolbar">
             <div class="dk-chips" role="tablist" aria-label="Status pertanyaan">
                 @foreach (['baru' => ['Belum dijawab', 'inbox'], 'dijawab' => ['Sudah dijawab', 'circle-check'], 'semua' => ['Semua', 'list']] as $key => [$label, $icon])
                     <button type="button" role="tab" @class(['dk-chip', 'is-active' => $status === $key]) aria-selected="{{ $status === $key ? 'true' : 'false' }}" wire:click="filter('{{ $key }}')">
@@ -239,8 +239,8 @@ new #[Layout('layouts::admin')] #[Title('Pertanyaan')] class extends Component
         @if ($questions->isEmpty())
             <x-ad.empty icon="mail-open" title="Tidak ada pertanyaan di sini" />
         @else
-            <div class="ad-tablewrap">
-                <table class="ad-table">
+            <div class="pnl-tablewrap">
+                <table class="pnl-table">
                     <thead><tr><th>Penanya</th><th>Topik</th><th>Pertanyaan</th><th>Masuk</th><th>Status</th><th><span class="dk-sr">Aksi</span></th></tr></thead>
                     <tbody>
                         @foreach ($questions as $q)
@@ -249,14 +249,14 @@ new #[Layout('layouts::admin')] #[Title('Pertanyaan')] class extends Component
                                 <td class="whitespace-nowrap">{{ $q->topik }}</td>
                                 <td class="max-w-[420px]"><span class="line-clamp-2">{{ $q->isi }}</span></td>
                                 <td class="whitespace-nowrap">{{ \App\Support\Format::shortDate($q->created_at) }}<small>{{ $q->created_at->format('H.i') }} WITA</small></td>
-                                <td><span @class(['ad-tag', 'ad-tag--new' => $q->status === \App\Enums\QuestionStatus::Baru, 'ad-tag--on' => $q->status === \App\Enums\QuestionStatus::Dijawab])>{{ $q->status->label() }}</span></td>
-                                <td><div class="ad-actions"><x-dk.button variant="secondary" size="sm" wire:click="lihat({{ $q->id }})">Buka</x-dk.button></div></td>
+                                <td><span @class(['pnl-tag', 'pnl-tag--new' => $q->status === \App\Enums\QuestionStatus::Baru, 'pnl-tag--on' => $q->status === \App\Enums\QuestionStatus::Dijawab])>{{ $q->status->label() }}</span></td>
+                                <td><div class="pnl-actions"><x-dk.button variant="secondary" size="sm" wire:click="lihat({{ $q->id }})">Buka</x-dk.button></div></td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
-            <div class="ad-pager">{{ $questions->links() }}</div>
+            <div class="pnl-pager">{{ $questions->links() }}</div>
         @endif
     </div>
 
@@ -264,17 +264,17 @@ new #[Layout('layouts::admin')] #[Title('Pertanyaan')] class extends Component
         @php($dijawab = $detail->status === \App\Enums\QuestionStatus::Dijawab)
         <x-ad.modal title="Pertanyaan dari {{ $detail->nama }}">
             <div class="grid gap-5">
-                <dl class="ad-kv">
+                <dl class="pnl-kv">
                     <dt>{{ $detail->isEmail() ? 'Email' : 'WhatsApp' }}</dt><dd>{{ $detail->kontak }}</dd>
                     <dt>Topik</dt><dd>{{ $detail->topik }}</dd>
                     <dt>Masuk</dt><dd>{{ \App\Support\Format::longDate($detail->created_at) }}, {{ $detail->created_at->format('H.i') }} WITA</dd>
                     @if ($detail->answered_at)<dt>Dijawab</dt><dd>{{ \App\Support\Format::longDate($detail->answered_at) }}, {{ $detail->answered_at->format('H.i') }} WITA</dd>@endif
                 </dl>
-                <blockquote class="ad-quote">{{ $detail->isi }}</blockquote>
+                <blockquote class="pnl-quote">{{ $detail->isi }}</blockquote>
 
                 @if ($templateList)
-                    <div class="ad-field">
-                        <span class="ad-label" id="tpl-label">Template pesan</span>
+                    <div class="pnl-field">
+                        <span class="pnl-label" id="tpl-label">Template pesan</span>
                         <div class="dk-chips" role="group" aria-labelledby="tpl-label">
                             @foreach ($templateList as $i => $t)
                                 <button type="button" @class(['dk-chip', 'is-active' => $template === $i]) aria-pressed="{{ $template === $i ? 'true' : 'false' }}" wire:click="pakaiTemplate({{ $i }})" wire:key="tpl-{{ $i }}">
@@ -282,13 +282,13 @@ new #[Layout('layouts::admin')] #[Title('Pertanyaan')] class extends Component
                                 </button>
                             @endforeach
                         </div>
-                        <span class="ad-help">Memilih template mengganti isi pesan di bawah.</span>
+                        <span class="pnl-help">Memilih template mengganti isi pesan di bawah.</span>
                     </div>
                 @endif
 
                 <x-ad.field label="Pesan WhatsApp" for="pesan" error="pesan"
                     help="{{ $detail->whatsappLink() ? 'Pesan ini terbuka di WhatsApp, tinggal Anda kirim. Pesan juga disimpan sebagai catatan jawaban.' : 'Penanya ini meninggalkan email, bukan nomor WhatsApp. Pesan disimpan sebagai catatan jawaban.' }}">
-                    <textarea id="pesan" class="ad-textarea" rows="10" wire:model="pesan" maxlength="2000"></textarea>
+                    <textarea id="pesan" class="pnl-textarea" rows="10" wire:model="pesan" maxlength="2000"></textarea>
                 </x-ad.field>
             </div>
             <x-slot:footer>
@@ -315,7 +315,7 @@ new #[Layout('layouts::admin')] #[Title('Pertanyaan')] class extends Component
     @if ($kelolaTemplate)
         <x-ad.modal title="Template balasan" size="wide" close="tutupTemplate">
             <div class="grid gap-5">
-                <p class="ad-help !text-[14px]">
+                <p class="pnl-help !text-[14px]">
                     Template mengisi pesan WhatsApp saat Anda membalas pertanyaan. Tulis kata dalam kurung kurawal untuk diisi otomatis:
                     @foreach ($placeholders as $kode => $arti)
                         <code>{{ $kode }}</code> {{ $arti }}{{ $loop->last ? '.' : ',' }}
@@ -325,12 +325,12 @@ new #[Layout('layouts::admin')] #[Title('Pertanyaan')] class extends Component
                     <div class="grid gap-3 rounded-md border border-line p-4" wire:key="tpl-edit-{{ $i }}">
                         <div class="flex items-end gap-3">
                             <x-ad.field label="Judul" for="tpl-judul-{{ $i }}" error="templates.{{ $i }}.judul" class="flex-1">
-                                <input id="tpl-judul-{{ $i }}" class="ad-input" wire:model="templates.{{ $i }}.judul" maxlength="40" placeholder="Contoh: Jawaban umum">
+                                <input id="tpl-judul-{{ $i }}" class="pnl-input" wire:model="templates.{{ $i }}.judul" maxlength="40" placeholder="Contoh: Jawaban umum">
                             </x-ad.field>
                             <button type="button" class="dk-iconbtn" wire:click="hapusTemplate({{ $i }})" aria-label="Hapus template {{ $t['judul'] }}"><x-dk.icon name="trash-2" :size="18" /></button>
                         </div>
                         <x-ad.field label="Isi pesan" for="tpl-isi-{{ $i }}" error="templates.{{ $i }}.isi">
-                            <textarea id="tpl-isi-{{ $i }}" class="ad-textarea" rows="7" wire:model="templates.{{ $i }}.isi" maxlength="1500"></textarea>
+                            <textarea id="tpl-isi-{{ $i }}" class="pnl-textarea" rows="7" wire:model="templates.{{ $i }}.isi" maxlength="1500"></textarea>
                         </x-ad.field>
                     </div>
                 @endforeach

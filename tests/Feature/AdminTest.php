@@ -43,6 +43,24 @@ class AdminTest extends TestCase
         $this->assertAuthenticatedAs($user);
     }
 
+    public function test_three_wrong_passwords_lock_sign_in_for_a_minute(): void
+    {
+        $user = User::factory()->create(['email' => 'petugas@dispusip.test']);
+        $login = Livewire::test('pages::admin.login')->set('email', 'petugas@dispusip.test');
+
+        $login->set('password', 'salah')->call('masuk')->assertHasErrors(['email'])->assertSee('Sisa 2 kali percobaan');
+        $login->set('password', 'salah')->call('masuk')->assertSee('Sisa 1 kali percobaan');
+        $login->set('password', 'salah')->call('masuk')->assertSee('Coba lagi dalam');
+
+        $login->set('password', 'password')->call('masuk')->assertNoRedirect()->assertSee('Coba lagi dalam');
+        $this->assertGuest();
+
+        $this->travel(61)->seconds();
+
+        $login->set('password', 'password')->call('masuk')->assertRedirect(route('admin.dashboard'));
+        $this->assertAuthenticatedAs($user);
+    }
+
     public function test_every_admin_page_renders(): void
     {
         $post = Post::factory()->create();

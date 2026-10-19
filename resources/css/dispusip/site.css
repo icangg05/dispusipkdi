@@ -1,10 +1,6 @@
 /* Dispusip — additions for the live site: pieces the design system did not draw yet,
    built from the same tokens and the same register-sheet language. */
 
-/* ---------- Type: Lexend only (it has no italic), so accents keep their colour and stay upright ---------- */
-.dk-accent, .dk-poster__t em { font-style: normal; font-weight: inherit; font-size: inherit; letter-spacing: inherit; }
-.dk-visi p, .dk-map__svg .m-label { font-style: normal; }
-
 /* ---------- Accessibility menu: seven options, the last one spans the row ---------- */
 .dk-a11y__grid > .dk-a11y__opt:last-child:nth-child(odd) { grid-column: 1 / -1; }
 
@@ -59,12 +55,21 @@ img.dk-hero__bg { width: 100%; height: 100%; object-fit: cover; }
 
 /* Livewire wraps the form card */
 .dk-gbwrap { display: flex; flex-direction: column; min-width: 0; }
-.dk-gbwrap > .dk-form { flex: 1; }
+.dk-gbwrap > .dk-form { flex: 1; scroll-margin-top: var(--space-4); }
 
-/* After submit: the photo pinned next to the stamp */
-.dk-gb__stamped { display: flex; align-items: flex-start; gap: var(--space-6); }
-.dk-gb__pinned { width: 84px; aspect-ratio: 3 / 4; flex: none; overflow: hidden; border: 1px solid var(--line-control); border-radius: var(--radius-xs); background: var(--surface-sunken); box-shadow: var(--shadow-sm); }
-.dk-gb__pinned img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* After submit: a quiet summary of the recorded visit (replaces the design system's rotated stamp) */
+.dk-gbok { display: flex; align-items: center; gap: var(--space-4); width: 100%; margin-bottom: var(--space-2); padding: var(--space-4) var(--space-5); border: 1px solid color-mix(in srgb, var(--success) 22%, var(--line)); border-radius: var(--radius-sm); background: color-mix(in srgb, var(--success-100) 45%, var(--surface-raised)); animation: dk-rise .4s ease both; }
+.dk-gbok__mark { width: 52px; height: 52px; flex: none; display: grid; place-items: center; border-radius: 50%; background: var(--success); color: var(--surface-raised); }
+.dk-gbok__foto { width: 60px; aspect-ratio: 3 / 4; flex: none; overflow: hidden; border: 1px solid var(--line-control); border-radius: var(--radius-xs); background: var(--surface-sunken); }
+.dk-gbok__foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dk-gbok__info { display: grid; min-width: 0; }
+.dk-gbok__k { font-size: 13px; line-height: 18px; font-weight: 600; color: var(--ink-muted); }
+.dk-gbok__no { font: 800 32px/38px var(--font-sans); letter-spacing: .02em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.dk-gbok__when { font-size: 13.5px; line-height: 20px; color: var(--ink-muted); }
+.dk-form--kiosk .dk-gbok__no { font-size: 40px; line-height: 46px; }
+@media (prefers-reduced-motion: reduce) {
+  .dk-gbok { animation: none; }
+}
 
 /* ---------- Inner pages: toolbar, search, grids, pagination ---------- */
 .dk-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-6); }
@@ -225,8 +230,6 @@ legend.dk-field__label { margin-bottom: 8px; }
 .dk-check input:checked + .dk-choice__box svg { opacity: 1; }
 .dk-check input:focus-visible + .dk-choice__box { box-shadow: var(--focus-ring); }
 .dk-field.has-error .dk-check .dk-choice__box { border-color: var(--danger); }
-.dk-form__done .dk-gb__stamped { margin-bottom: var(--space-2); }
-.dk-form__done .dk-stamp { margin-bottom: 0; }
 
 /* Tablet at the service desk: bigger targets */
 .dk-form--kiosk .dk-form__head { padding: var(--space-6) var(--space-8); }
@@ -284,7 +287,6 @@ legend.dk-field__label { margin-bottom: 8px; }
   .dk-prose { font-size: 16px; line-height: 28px; }
   .dk-search { max-width: none; }
   .dk-pager { justify-content: center; }
-  .dk-gb__stamped { flex-direction: column; gap: var(--space-3); }
   .dk-panel { padding: var(--space-4); }
   .dk-gitem--poster .dk-gitem__cap { display: none; }
 }
@@ -296,20 +298,20 @@ legend.dk-field__label { margin-bottom: 8px; }
 /* ---------- Scrollbars on the public site (admin has its own in admin.css) ----------
    A laut thumb inset on a paper track; thinner inside scroll areas (tables, panels, the lightbox).
    Chromium and Safari read the ::-webkit-scrollbar rules; Firefox reads scrollbar-color. */
-:root:not(:has(.ad-shell)) { --scroll-thumb: color-mix(in srgb, var(--laut-700) 55%, var(--surface-sunken)); --scroll-track: var(--surface-sunken); }
-:root:not(:has(.ad-shell))::-webkit-scrollbar { width: 14px; height: 14px; }
-:root:not(:has(.ad-shell))::-webkit-scrollbar-track { background: var(--scroll-track); border-left: 1px solid var(--line); }
-:root:not(:has(.ad-shell))::-webkit-scrollbar-thumb { border: 3px solid transparent; border-radius: var(--radius-full); background: var(--scroll-thumb) padding-box; }
-:root:not(:has(.ad-shell))::-webkit-scrollbar-thumb:hover { background-color: var(--laut-700); }
-:root:not(:has(.ad-shell))::-webkit-scrollbar-thumb:active { background-color: var(--laut-800); }
-:root:not(:has(.ad-shell)) body ::-webkit-scrollbar { width: 8px; height: 8px; }
-:root:not(:has(.ad-shell)) body ::-webkit-scrollbar-track, :root:not(:has(.ad-shell)) body ::-webkit-scrollbar-corner { background: transparent; }
-:root:not(:has(.ad-shell)) body ::-webkit-scrollbar-thumb { border: 2px solid transparent; border-radius: var(--radius-full); background: color-mix(in srgb, var(--laut-700) 35%, transparent) padding-box; }
-:root:not(:has(.ad-shell)) body ::-webkit-scrollbar-thumb:hover { background-color: color-mix(in srgb, var(--laut-700) 60%, transparent); }
+:root:not(:has(.pnl-shell)) { --scroll-thumb: color-mix(in srgb, var(--laut-700) 55%, var(--surface-sunken)); --scroll-track: var(--surface-sunken); }
+:root:not(:has(.pnl-shell))::-webkit-scrollbar { width: 14px; height: 14px; }
+:root:not(:has(.pnl-shell))::-webkit-scrollbar-track { background: var(--scroll-track); border-left: 1px solid var(--line); }
+:root:not(:has(.pnl-shell))::-webkit-scrollbar-thumb { border: 3px solid transparent; border-radius: var(--radius-full); background: var(--scroll-thumb) padding-box; }
+:root:not(:has(.pnl-shell))::-webkit-scrollbar-thumb:hover { background-color: var(--laut-700); }
+:root:not(:has(.pnl-shell))::-webkit-scrollbar-thumb:active { background-color: var(--laut-800); }
+:root:not(:has(.pnl-shell)) body ::-webkit-scrollbar { width: 8px; height: 8px; }
+:root:not(:has(.pnl-shell)) body ::-webkit-scrollbar-track, :root:not(:has(.pnl-shell)) body ::-webkit-scrollbar-corner { background: transparent; }
+:root:not(:has(.pnl-shell)) body ::-webkit-scrollbar-thumb { border: 2px solid transparent; border-radius: var(--radius-full); background: color-mix(in srgb, var(--laut-700) 35%, transparent) padding-box; }
+:root:not(:has(.pnl-shell)) body ::-webkit-scrollbar-thumb:hover { background-color: color-mix(in srgb, var(--laut-700) 60%, transparent); }
 .dk-chips::-webkit-scrollbar { display: none; }
 @supports not selector(::-webkit-scrollbar) {
-  :root:not(:has(.ad-shell)) { scrollbar-color: var(--scroll-thumb) var(--scroll-track); }
-  :where(:root:not(:has(.ad-shell)) body *) { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--laut-700) 35%, transparent) transparent; }
+  :root:not(:has(.pnl-shell)) { scrollbar-color: var(--scroll-thumb) var(--scroll-track); }
+  :where(:root:not(:has(.pnl-shell)) body *) { scrollbar-width: thin; scrollbar-color: color-mix(in srgb, var(--laut-700) 35%, transparent) transparent; }
 }
 
 /* ---------- Buttons wrapping a file input show its focus ---------- */

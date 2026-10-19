@@ -109,21 +109,21 @@ new #[Layout('layouts::admin')] #[Title('Layanan')] class extends Component
 };
 ?>
 
-<div class="ad-grid" style="gap: var(--space-6)">
-    <div class="ad-pagehead">
+<div class="pnl-grid" style="gap: var(--space-6)">
+    <div class="pnl-pagehead">
         <div>
             <h1>Layanan</h1>
             <p>Kartu layanan di Beranda dan halaman Profil. Satu kartu dapat ditonjolkan (biasanya Buku Tamu Digital); label tautan berupa kata kerja, misalnya <em>Lihat jadwal</em>.</p>
         </div>
-        <div class="ad-pagehead__actions"><x-dk.button variant="primary" icon="plus" wire:click="tambah">Tambah layanan</x-dk.button></div>
+        <div class="pnl-pagehead__actions"><x-dk.button variant="primary" icon="plus" wire:click="tambah">Tambah layanan</x-dk.button></div>
     </div>
 
-    <div class="ad-card">
+    <div class="pnl-card">
         @if ($services->isEmpty())
             <x-ad.empty icon="layers" title="Belum ada layanan" />
         @else
-            <div class="ad-tablewrap">
-                <table class="ad-table">
+            <div class="pnl-tablewrap">
+                <table class="pnl-table">
                     <thead><tr><th>Urutan</th><th>Layanan</th><th>Tautan</th><th>Status</th><th><span class="dk-sr">Aksi</span></th></tr></thead>
                     <tbody>
                         @foreach ($services as $service)
@@ -137,13 +137,13 @@ new #[Layout('layouts::admin')] #[Title('Layanan')] class extends Component
                                 </td>
                                 <td><span class="text-[13px]">{{ $service->link_label ?: 'Selengkapnya' }}</span><small class="font-mono">{{ $service->href ?: '—' }}</small></td>
                                 <td class="whitespace-nowrap">
-                                    <span @class(['ad-tag', 'ad-tag--on' => $service->is_active])>{{ $service->is_active ? 'Tampil' : 'Disembunyikan' }}</span>
-                                    @if ($service->is_featured)<span class="ad-tag ad-tag--new">Ditonjolkan</span>@endif
+                                    <span @class(['pnl-tag', 'pnl-tag--on' => $service->is_active])>{{ $service->is_active ? 'Tampil' : 'Disembunyikan' }}</span>
+                                    @if ($service->is_featured)<span class="pnl-tag pnl-tag--new">Ditonjolkan</span>@endif
                                 </td>
                                 <td>
-                                    <div class="ad-actions">
+                                    <div class="pnl-actions">
                                         <button type="button" class="dk-iconbtn" wire:click="ubah({{ $service->id }})" aria-label="Ubah"><x-dk.icon name="pencil" :size="17" /></button>
-                                        <button type="button" class="dk-iconbtn ad-iconbtn--danger" wire:click="hapus({{ $service->id }})" wire:confirm="Hapus layanan {{ $service->title }}?" aria-label="Hapus"><x-dk.icon name="trash-2" :size="17" /></button>
+                                        <button type="button" class="dk-iconbtn pnl-iconbtn--danger" wire:click="hapus({{ $service->id }})" wire:confirm="Hapus layanan {{ $service->title }}?" aria-label="Hapus"><x-dk.icon name="trash-2" :size="17" /></button>
                                     </div>
                                 </td>
                             </tr>
@@ -156,13 +156,13 @@ new #[Layout('layouts::admin')] #[Title('Layanan')] class extends Component
 
     @if ($showForm)
         <x-ad.modal :title="$editId ? 'Ubah layanan' : 'Tambah layanan'" size="wide">
-            <form id="form-layanan" class="ad-form" wire:submit="simpan">
-                <div class="ad-grid ad-grid--2">
-                    <x-ad.field label="Nama layanan" for="title" error="title"><input id="title" class="ad-input" wire:model="title" maxlength="60"></x-ad.field>
-                    <x-ad.field label="Label tautan" for="link_label" error="link_label" optional><input id="link_label" class="ad-input" wire:model="link_label" maxlength="40" placeholder="Contoh: Lihat jadwal"></x-ad.field>
+            <form id="form-layanan" class="pnl-form" wire:submit="simpan">
+                <div class="pnl-grid pnl-grid--2">
+                    <x-ad.field label="Nama layanan" for="title" error="title"><input id="title" class="pnl-input" wire:model="title" maxlength="60"></x-ad.field>
+                    <x-ad.field label="Label tautan" for="link_label" error="link_label" optional><input id="link_label" class="pnl-input" wire:model="link_label" maxlength="40" placeholder="Contoh: Lihat jadwal"></x-ad.field>
                 </div>
-                <x-ad.field label="Deskripsi singkat" for="text" error="text" help="Paling panjang 140 karakter."><textarea id="text" class="ad-textarea" rows="2" maxlength="140" wire:model="text"></textarea></x-ad.field>
-                <x-ad.field label="Tautan" for="href" error="href" optional help="Halaman situs ini diawali <code>/</code>, misalnya <code>/buku-tamu</code> atau <code>/kontak</code>; situs lain diawali <code>https://</code>."><input id="href" class="ad-input font-mono" wire:model="href" maxlength="255"></x-ad.field>
+                <x-ad.field label="Deskripsi singkat" for="text" error="text" help="Paling panjang 140 karakter."><textarea id="text" class="pnl-textarea" rows="2" maxlength="140" wire:model="text"></textarea></x-ad.field>
+                <x-ad.field label="Tautan" for="href" error="href" optional help="Halaman situs ini diawali <code>/</code>, misalnya <code>/buku-tamu</code> atau <code>/kontak</code>; situs lain diawali <code>https://</code>."><input id="href" class="pnl-input font-mono" wire:model="href" maxlength="255"></x-ad.field>
                 <x-ad.field label="Ikon" error="icon"><x-ad.icon-select model="icon" /></x-ad.field>
                 <div class="flex flex-wrap gap-6">
                     <x-ad.check model="is_featured">Tonjolkan kartu ini (hanya satu)</x-ad.check>

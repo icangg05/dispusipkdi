@@ -304,8 +304,8 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
         'bukutamu' => ['Buku tamu', 'notebook-pen'],
     ];
 @endphp
-<div class="ad-grid" style="gap: var(--space-6)">
-    <div class="ad-pagehead">
+<div class="pnl-grid" style="gap: var(--space-6)">
+    <div class="pnl-pagehead">
         <div>
             <h1>Pengaturan situs</h1>
             <p>Informasi dinas yang tampil di seluruh situs. Semua isi bawaan adalah contoh. Ganti dengan data resmi sebelum situs diluncurkan.</p>
@@ -322,17 +322,17 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
 
     {{-- Identitas & profil --}}
     @if ($tab === 'identitas')
-        <form class="ad-grid" style="gap: var(--space-6)" wire:submit="simpanIdentitas">
-            <div class="ad-card">
-                <div class="ad-card__head"><h2 class="ad-card__title"><x-dk.icon name="building-2" :size="18" /> Identitas</h2></div>
-                <div class="ad-card__body ad-form">
-                    <div class="ad-grid ad-grid--3">
-                        <x-ad.field label="Nama dinas" for="i-nama" error="identitas.nama" class="md:col-span-2"><input id="i-nama" class="ad-input" wire:model="identitas.nama"></x-ad.field>
-                        <x-ad.field label="Singkatan" for="i-singkatan" error="identitas.singkatan"><input id="i-singkatan" class="ad-input" wire:model="identitas.singkatan" maxlength="20"></x-ad.field>
+        <form class="pnl-grid" style="gap: var(--space-6)" wire:submit="simpanIdentitas">
+            <div class="pnl-card">
+                <div class="pnl-card__head"><h2 class="pnl-card__title"><x-dk.icon name="building-2" :size="18" /> Identitas</h2></div>
+                <div class="pnl-card__body pnl-form">
+                    <div class="pnl-grid pnl-grid--3">
+                        <x-ad.field label="Nama dinas" for="i-nama" error="identitas.nama" class="md:col-span-2"><input id="i-nama" class="pnl-input" wire:model="identitas.nama"></x-ad.field>
+                        <x-ad.field label="Singkatan" for="i-singkatan" error="identitas.singkatan"><input id="i-singkatan" class="pnl-input" wire:model="identitas.singkatan" maxlength="20"></x-ad.field>
                     </div>
-                    <div class="ad-grid ad-grid--3">
-                        <x-ad.field label="Kota" for="i-kota" error="identitas.kota"><input id="i-kota" class="ad-input" wire:model="identitas.kota" maxlength="40"></x-ad.field>
-                        <x-ad.field label="Deskripsi singkat (footer)" for="i-desk" error="identitas.deskripsi" class="md:col-span-2"><textarea id="i-desk" class="ad-textarea" rows="2" wire:model="identitas.deskripsi" maxlength="300"></textarea></x-ad.field>
+                    <div class="pnl-grid pnl-grid--3">
+                        <x-ad.field label="Kota" for="i-kota" error="identitas.kota"><input id="i-kota" class="pnl-input" wire:model="identitas.kota" maxlength="40"></x-ad.field>
+                        <x-ad.field label="Deskripsi singkat (footer)" for="i-desk" error="identitas.deskripsi" class="md:col-span-2"><textarea id="i-desk" class="pnl-textarea" rows="2" wire:model="identitas.deskripsi" maxlength="300"></textarea></x-ad.field>
                     </div>
                     <x-ad.field label="Logo" error="logo" optional help="Logo resmi Pemkot Kendari / Dispusip, persegi dengan latar transparan (PNG). Tanpa logo, situs memakai ikon perpustakaan.">
                         <x-ad.image-upload model="logo" :file="$logo" :current="\App\Support\Media::url($identitas['logo'] ?? null)" square>
@@ -344,43 +344,43 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
                 </div>
             </div>
 
-            <div class="ad-card">
-                <div class="ad-card__head"><h2 class="ad-card__title"><x-dk.icon name="landmark" :size="18" /> Profil dinas</h2></div>
-                <div class="ad-card__body ad-form">
-                    <x-ad.field label="Profil ringkas" for="p-ringkas" error="profil.ringkas" help="2 sampai 3 kalimat; tampil di Beranda dan halaman Profil."><textarea id="p-ringkas" class="ad-textarea" rows="3" wire:model="profil.ringkas"></textarea></x-ad.field>
-                    <x-ad.field label="Sejarah singkat" for="p-sejarah" error="profil.sejarah" optional help="Pisahkan paragraf dengan baris kosong."><textarea id="p-sejarah" class="ad-textarea" rows="5" wire:model="profil.sejarah"></textarea></x-ad.field>
-                    <x-ad.field label="Visi" for="p-visi" error="profil.visi"><textarea id="p-visi" class="ad-textarea" rows="2" wire:model="profil.visi"></textarea></x-ad.field>
-                    <fieldset class="ad-fieldset">
-                        <legend class="ad-legend">Misi</legend>
-                        <div class="ad-repeat">
+            <div class="pnl-card">
+                <div class="pnl-card__head"><h2 class="pnl-card__title"><x-dk.icon name="landmark" :size="18" /> Profil dinas</h2></div>
+                <div class="pnl-card__body pnl-form">
+                    <x-ad.field label="Profil ringkas" for="p-ringkas" error="profil.ringkas" help="2 sampai 3 kalimat; tampil di Beranda dan halaman Profil."><textarea id="p-ringkas" class="pnl-textarea" rows="3" wire:model="profil.ringkas"></textarea></x-ad.field>
+                    <x-ad.field label="Sejarah singkat" for="p-sejarah" error="profil.sejarah" optional help="Pisahkan paragraf dengan baris kosong."><textarea id="p-sejarah" class="pnl-textarea" rows="5" wire:model="profil.sejarah"></textarea></x-ad.field>
+                    <x-ad.field label="Visi" for="p-visi" error="profil.visi"><textarea id="p-visi" class="pnl-textarea" rows="2" wire:model="profil.visi"></textarea></x-ad.field>
+                    <fieldset class="pnl-fieldset">
+                        <legend class="pnl-legend">Misi</legend>
+                        <div class="pnl-repeat">
                             @foreach ($profil['misi'] as $i => $misi)
-                                <div class="ad-repeat__row" wire:key="misi-{{ $i }}">
-                                    <x-ad.field error="profil.misi.{{ $i }}"><input class="ad-input" wire:model="profil.misi.{{ $i }}" aria-label="Misi {{ $i + 1 }}"></x-ad.field>
-                                    <button type="button" class="dk-iconbtn ad-iconbtn--danger" wire:click="hapusMisi({{ $i }})" aria-label="Hapus misi {{ $i + 1 }}"><x-dk.icon name="trash-2" :size="17" /></button>
+                                <div class="pnl-repeat__row" wire:key="misi-{{ $i }}">
+                                    <x-ad.field error="profil.misi.{{ $i }}"><input class="pnl-input" wire:model="profil.misi.{{ $i }}" aria-label="Misi {{ $i + 1 }}"></x-ad.field>
+                                    <button type="button" class="dk-iconbtn pnl-iconbtn--danger" wire:click="hapusMisi({{ $i }})" aria-label="Hapus misi {{ $i + 1 }}"><x-dk.icon name="trash-2" :size="17" /></button>
                                 </div>
                             @endforeach
                         </div>
-                        @error('profil.misi')<span class="ad-error">{{ $message }}</span>@enderror
+                        @error('profil.misi')<span class="pnl-error">{{ $message }}</span>@enderror
                         <div><x-dk.button variant="ghost" size="sm" icon="plus" wire:click="tambahMisi">Tambah misi</x-dk.button></div>
                     </fieldset>
-                    <fieldset class="ad-fieldset">
-                        <legend class="ad-legend">Tugas &amp; fungsi</legend>
+                    <fieldset class="pnl-fieldset">
+                        <legend class="pnl-legend">Tugas &amp; fungsi</legend>
                         @foreach ($profil['tugas'] as $i => $tugas)
                             <div class="grid gap-3 rounded-md border border-line p-4" wire:key="tugas-{{ $i }}">
-                                <div class="ad-grid ad-grid--2">
-                                    <x-ad.field label="Judul" error="profil.tugas.{{ $i }}.title"><input class="ad-input" wire:model="profil.tugas.{{ $i }}.title" maxlength="60"></x-ad.field>
-                                    <x-ad.field label="Keterangan" error="profil.tugas.{{ $i }}.text"><input class="ad-input" wire:model="profil.tugas.{{ $i }}.text" maxlength="160"></x-ad.field>
+                                <div class="pnl-grid pnl-grid--2">
+                                    <x-ad.field label="Judul" error="profil.tugas.{{ $i }}.title"><input class="pnl-input" wire:model="profil.tugas.{{ $i }}.title" maxlength="60"></x-ad.field>
+                                    <x-ad.field label="Keterangan" error="profil.tugas.{{ $i }}.text"><input class="pnl-input" wire:model="profil.tugas.{{ $i }}.text" maxlength="160"></x-ad.field>
                                 </div>
                                 <x-ad.field label="Ikon" error="profil.tugas.{{ $i }}.icon"><x-ad.icon-select model="profil.tugas.{{ $i }}.icon" /></x-ad.field>
                                 <div><x-dk.button variant="ghost" size="sm" icon="trash-2" wire:click="hapusTugas({{ $i }})">Hapus tugas ini</x-dk.button></div>
                             </div>
                         @endforeach
-                        @error('profil.tugas')<span class="ad-error">{{ $message }}</span>@enderror
+                        @error('profil.tugas')<span class="pnl-error">{{ $message }}</span>@enderror
                         <div><x-dk.button variant="ghost" size="sm" icon="plus" wire:click="tambahTugas">Tambah tugas</x-dk.button></div>
                     </fieldset>
-                    <fieldset class="ad-fieldset">
-                        <legend class="ad-legend">Gambar</legend>
-                        <div class="ad-grid ad-grid--2">
+                    <fieldset class="pnl-fieldset">
+                        <legend class="pnl-legend">Gambar</legend>
+                        <div class="pnl-grid pnl-grid--2">
                             <x-ad.field label="Foto besar (belakang)" error="gambarUtama" optional>
                                 <x-ad.image-upload model="gambarUtama" :file="$gambarUtama" :current="\App\Support\Media::url($profil['gambar_utama'] ?? null)" />
                             </x-ad.field>
@@ -397,57 +397,57 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
                         </x-ad.field>
                     </fieldset>
                 </div>
-                <div class="ad-card__foot"><span class="ad-help">Perubahan langsung tampil di situs setelah disimpan.</span><x-dk.button type="submit" variant="primary" icon="save" wire:loading.attr="disabled" wire:target="simpanIdentitas, logo, gambarUtama, gambarKedua, struktur">Simpan identitas &amp; profil</x-dk.button></div>
+                <div class="pnl-card__foot"><span class="pnl-help">Perubahan langsung tampil di situs setelah disimpan.</span><x-dk.button type="submit" variant="primary" icon="save" wire:loading.attr="disabled" wire:target="simpanIdentitas, logo, gambarUtama, gambarKedua, struktur">Simpan identitas &amp; profil</x-dk.button></div>
             </div>
         </form>
     @endif
 
     {{-- Kontak --}}
     @if ($tab === 'kontak')
-        <form class="ad-card" wire:submit="simpanKontak">
-            <div class="ad-card__head"><h2 class="ad-card__title"><x-dk.icon name="phone" :size="18" /> Kontak &amp; lokasi</h2></div>
-            <div class="ad-card__body ad-form">
-                <div class="ad-grid ad-grid--3">
-                    <x-ad.field label="Nomor WhatsApp" for="k-wa" error="kontak.whatsapp" help="Dipakai tombol WhatsApp melayang dan kartu kontak."><input id="k-wa" class="ad-input" wire:model="kontak.whatsapp" inputmode="tel" placeholder="0812-0000-0000"></x-ad.field>
-                    <x-ad.field label="Email" for="k-email" error="kontak.email"><input id="k-email" type="email" class="ad-input" wire:model="kontak.email"></x-ad.field>
-                    <x-ad.field label="Telepon kantor" for="k-tel" error="kontak.telepon" optional><input id="k-tel" class="ad-input" wire:model="kontak.telepon"></x-ad.field>
+        <form class="pnl-card" wire:submit="simpanKontak">
+            <div class="pnl-card__head"><h2 class="pnl-card__title"><x-dk.icon name="phone" :size="18" /> Kontak &amp; lokasi</h2></div>
+            <div class="pnl-card__body pnl-form">
+                <div class="pnl-grid pnl-grid--3">
+                    <x-ad.field label="Nomor WhatsApp" for="k-wa" error="kontak.whatsapp" help="Dipakai tombol WhatsApp melayang dan kartu kontak."><input id="k-wa" class="pnl-input" wire:model="kontak.whatsapp" inputmode="tel" placeholder="0812-0000-0000"></x-ad.field>
+                    <x-ad.field label="Email" for="k-email" error="kontak.email"><input id="k-email" type="email" class="pnl-input" wire:model="kontak.email"></x-ad.field>
+                    <x-ad.field label="Telepon kantor" for="k-tel" error="kontak.telepon" optional><input id="k-tel" class="pnl-input" wire:model="kontak.telepon"></x-ad.field>
                 </div>
-                <div class="ad-grid ad-grid--main">
-                    <x-ad.field label="Alamat kantor" for="k-alamat" error="kontak.alamat"><textarea id="k-alamat" class="ad-textarea" rows="2" wire:model="kontak.alamat"></textarea></x-ad.field>
-                    <x-ad.field label="Catatan alamat" for="k-catatan" error="kontak.catatan_alamat" optional help="Misalnya: Ruang baca di lantai 1."><input id="k-catatan" class="ad-input" wire:model="kontak.catatan_alamat"></x-ad.field>
+                <div class="pnl-grid pnl-grid--main">
+                    <x-ad.field label="Alamat kantor" for="k-alamat" error="kontak.alamat"><textarea id="k-alamat" class="pnl-textarea" rows="2" wire:model="kontak.alamat"></textarea></x-ad.field>
+                    <x-ad.field label="Catatan alamat" for="k-catatan" error="kontak.catatan_alamat" optional help="Misalnya: Ruang baca di lantai 1."><input id="k-catatan" class="pnl-input" wire:model="kontak.catatan_alamat"></x-ad.field>
                 </div>
-                <x-ad.field label="Tautan petunjuk arah" for="k-link" error="kontak.maps_link" optional help="Tautan Google Maps lokasi kantor (tombol Petunjuk arah)."><input id="k-link" type="url" class="ad-input" wire:model="kontak.maps_link" placeholder="https://maps.app.goo.gl/…"></x-ad.field>
+                <x-ad.field label="Tautan petunjuk arah" for="k-link" error="kontak.maps_link" optional help="Tautan Google Maps lokasi kantor (tombol Petunjuk arah)."><input id="k-link" type="url" class="pnl-input" wire:model="kontak.maps_link" placeholder="https://maps.app.goo.gl/…"></x-ad.field>
                 <x-ad.field label="Sematan peta" for="k-embed" error="kontak.maps_embed" optional help="Di Google Maps: Bagikan › Sematkan peta › Salin HTML, lalu tempel di sini. Bila kosong, ditampilkan ilustrasi peta.">
-                    <textarea id="k-embed" class="ad-textarea font-mono text-[13px]" rows="3" wire:model="kontak.maps_embed" placeholder='<iframe src="https://www.google.com/maps/embed?pb=…"></iframe>'></textarea>
+                    <textarea id="k-embed" class="pnl-textarea font-mono text-[13px]" rows="3" wire:model="kontak.maps_embed" placeholder='<iframe src="https://www.google.com/maps/embed?pb=…"></iframe>'></textarea>
                 </x-ad.field>
             </div>
-            <div class="ad-card__foot"><span class="ad-help">Jam layanan diatur di tab Jam layanan.</span><x-dk.button type="submit" variant="primary" icon="save">Simpan kontak</x-dk.button></div>
+            <div class="pnl-card__foot"><span class="pnl-help">Jam layanan diatur di tab Jam layanan.</span><x-dk.button type="submit" variant="primary" icon="save">Simpan kontak</x-dk.button></div>
         </form>
     @endif
 
     {{-- Media sosial --}}
     @if ($tab === 'sosmed')
-        <form class="ad-card" wire:submit="simpanSosmed">
-            <div class="ad-card__head"><h2 class="ad-card__title"><x-dk.icon name="globe" :size="18" /> Media sosial</h2></div>
-            <div class="ad-card__body ad-form">
+        <form class="pnl-card" wire:submit="simpanSosmed">
+            <div class="pnl-card__head"><h2 class="pnl-card__title"><x-dk.icon name="globe" :size="18" /> Media sosial</h2></div>
+            <div class="pnl-card__body pnl-form">
                 @foreach (\App\Support\SiteSettings::PLATFORMS as $platform => $label)
                     <div class="grid items-start gap-4 md:grid-cols-[180px_minmax(0,1fr)_minmax(0,1fr)]" wire:key="sosmed-{{ $platform }}">
                         <span class="flex items-center gap-3 pt-7 font-bold"><span class="dk-soc-card__icon"><x-dk.icon :name="$platform" :size="22" /></span>{{ $label }}</span>
-                        <x-ad.field label="Tautan profil" error="sosmed.{{ $platform }}.url"><input type="url" class="ad-input" wire:model="sosmed.{{ $platform }}.url" placeholder="https://"></x-ad.field>
-                        <x-ad.field label="Nama akun" error="sosmed.{{ $platform }}.handle"><input class="ad-input" wire:model="sosmed.{{ $platform }}.handle" placeholder="@dispusip.kendari"></x-ad.field>
+                        <x-ad.field label="Tautan profil" error="sosmed.{{ $platform }}.url"><input type="url" class="pnl-input" wire:model="sosmed.{{ $platform }}.url" placeholder="https://"></x-ad.field>
+                        <x-ad.field label="Nama akun" error="sosmed.{{ $platform }}.handle"><input class="pnl-input" wire:model="sosmed.{{ $platform }}.handle" placeholder="@dispusip.kendari"></x-ad.field>
                     </div>
                 @endforeach
             </div>
-            <div class="ad-card__foot"><span class="ad-help">Kosongkan tautan untuk menyembunyikan akun.</span><x-dk.button type="submit" variant="primary" icon="save">Simpan media sosial</x-dk.button></div>
+            <div class="pnl-card__foot"><span class="pnl-help">Kosongkan tautan untuk menyembunyikan akun.</span><x-dk.button type="submit" variant="primary" icon="save">Simpan media sosial</x-dk.button></div>
         </form>
     @endif
 
     {{-- Jam layanan --}}
     @if ($tab === 'jadwal')
-        <form class="ad-card" wire:submit="simpanJadwal">
-            <div class="ad-card__head"><h2 class="ad-card__title"><x-dk.icon name="clock" :size="18" /> Jam layanan (WITA)</h2></div>
-            <div class="ad-tablewrap">
-                <table class="ad-table">
+        <form class="pnl-card" wire:submit="simpanJadwal">
+            <div class="pnl-card__head"><h2 class="pnl-card__title"><x-dk.icon name="clock" :size="18" /> Jam layanan (WITA)</h2></div>
+            <div class="pnl-tablewrap">
+                <table class="pnl-table">
                     <thead><tr><th>Hari</th><th>Buka</th><th>Sesi</th><th><span class="dk-sr">Aksi</span></th></tr></thead>
                     <tbody>
                         @foreach ($hariUrut as $day)
@@ -459,14 +459,14 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
                                         <div class="grid gap-2">
                                             @foreach ($jadwal[$day]['sesi'] as $i => $sesi)
                                                 <div class="flex flex-wrap items-center gap-2" wire:key="sesi-{{ $day }}-{{ $i }}">
-                                                    <input type="time" class="ad-input ad-input--sm !w-auto" wire:model="jadwal.{{ $day }}.sesi.{{ $i }}.mulai" aria-label="{{ $namaHari[$day] }} sesi {{ $i + 1 }} buka">
+                                                    <input type="time" class="pnl-input pnl-input--sm !w-auto" wire:model="jadwal.{{ $day }}.sesi.{{ $i }}.mulai" aria-label="{{ $namaHari[$day] }} sesi {{ $i + 1 }} buka">
                                                     <span class="text-ink-muted">sampai</span>
-                                                    <input type="time" class="ad-input ad-input--sm !w-auto" wire:model="jadwal.{{ $day }}.sesi.{{ $i }}.selesai" aria-label="{{ $namaHari[$day] }} sesi {{ $i + 1 }} tutup">
+                                                    <input type="time" class="pnl-input pnl-input--sm !w-auto" wire:model="jadwal.{{ $day }}.sesi.{{ $i }}.selesai" aria-label="{{ $namaHari[$day] }} sesi {{ $i + 1 }} tutup">
                                                     @if ($i > 0)
                                                         <button type="button" class="dk-iconbtn dk-iconbtn--sm" wire:click="hapusSesi({{ $day }}, {{ $i }})" aria-label="Hapus sesi"><x-dk.icon name="x" :size="16" /></button>
                                                     @endif
-                                                    @error("jadwal.$day.sesi.$i.selesai")<span class="ad-error">{{ $message }}</span>@enderror
-                                                    @error("jadwal.$day.sesi.$i.mulai")<span class="ad-error">{{ $message }}</span>@enderror
+                                                    @error("jadwal.$day.sesi.$i.selesai")<span class="pnl-error">{{ $message }}</span>@enderror
+                                                    @error("jadwal.$day.sesi.$i.mulai")<span class="pnl-error">{{ $message }}</span>@enderror
                                                 </div>
                                             @endforeach
                                         </div>
@@ -484,40 +484,40 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
                     </tbody>
                 </table>
             </div>
-            <div class="ad-card__foot"><span class="ad-help">Status <em>Buka sekarang / Tutup</em> di situs dihitung dari jadwal ini. Hari Jumat biasanya dua sesi (istirahat salat Jumat).</span><x-dk.button type="submit" variant="primary" icon="save">Simpan jam layanan</x-dk.button></div>
+            <div class="pnl-card__foot"><span class="pnl-help">Status <em>Buka sekarang / Tutup</em> di situs dihitung dari jadwal ini. Hari Jumat biasanya dua sesi (istirahat salat Jumat).</span><x-dk.button type="submit" variant="primary" icon="save">Simpan jam layanan</x-dk.button></div>
         </form>
     @endif
 
     {{-- Angka utama --}}
     @if ($tab === 'angka')
-        <form class="ad-card" wire:submit="simpanAngka">
-            <div class="ad-card__head"><h2 class="ad-card__title"><x-dk.icon name="chart-column" :size="18" /> Angka utama di bawah hero</h2></div>
-            <div class="ad-card__body ad-form">
-                <p class="ad-help m-0">Empat angka yang selalu diperbarui, misalnya jumlah koleksi, arsip, anggota, dan titik layanan keliling. Bila sebuah angka tidak dipelihara, kosongkan agar tidak tampil angka basi.</p>
+        <form class="pnl-card" wire:submit="simpanAngka">
+            <div class="pnl-card__head"><h2 class="pnl-card__title"><x-dk.icon name="chart-column" :size="18" /> Angka utama di bawah hero</h2></div>
+            <div class="pnl-card__body pnl-form">
+                <p class="pnl-help m-0">Empat angka yang selalu diperbarui, misalnya jumlah koleksi, arsip, anggota, dan titik layanan keliling. Bila sebuah angka tidak dipelihara, kosongkan agar tidak tampil angka basi.</p>
                 @foreach ($angka as $i => $item)
                     <div class="grid gap-3 rounded-md border border-line p-4" wire:key="angka-{{ $i }}">
-                        <div class="ad-grid ad-grid--2">
-                            <x-ad.field label="Angka" error="angka.{{ $i }}.value" optional><input class="ad-input" wire:model="angka.{{ $i }}.value" placeholder="32.500+"></x-ad.field>
-                            <x-ad.field label="Keterangan" error="angka.{{ $i }}.label"><input class="ad-input" wire:model="angka.{{ $i }}.label" placeholder="Eksemplar koleksi"></x-ad.field>
+                        <div class="pnl-grid pnl-grid--2">
+                            <x-ad.field label="Angka" error="angka.{{ $i }}.value" optional><input class="pnl-input" wire:model="angka.{{ $i }}.value" placeholder="32.500+"></x-ad.field>
+                            <x-ad.field label="Keterangan" error="angka.{{ $i }}.label"><input class="pnl-input" wire:model="angka.{{ $i }}.label" placeholder="Eksemplar koleksi"></x-ad.field>
                         </div>
                         <x-ad.field label="Ikon" error="angka.{{ $i }}.icon"><x-ad.icon-select model="angka.{{ $i }}.icon" /></x-ad.field>
                     </div>
                 @endforeach
             </div>
-            <div class="ad-card__foot"><span class="ad-help">Tulis angka dengan titik pemisah ribuan, misalnya 14.200.</span><x-dk.button type="submit" variant="primary" icon="save">Simpan angka</x-dk.button></div>
+            <div class="pnl-card__foot"><span class="pnl-help">Tulis angka dengan titik pemisah ribuan, misalnya 14.200.</span><x-dk.button type="submit" variant="primary" icon="save">Simpan angka</x-dk.button></div>
         </form>
     @endif
 
     {{-- Buku tamu --}}
     @if ($tab === 'bukutamu')
-        <form class="ad-card" wire:submit="simpanBukuTamu">
-            <div class="ad-card__head"><h2 class="ad-card__title"><x-dk.icon name="notebook-pen" :size="18" /> Buku tamu</h2></div>
-            <div class="ad-card__body ad-form">
+        <form class="pnl-card" wire:submit="simpanBukuTamu">
+            <div class="pnl-card__head"><h2 class="pnl-card__title"><x-dk.icon name="notebook-pen" :size="18" /> Buku tamu</h2></div>
+            <div class="pnl-card__body pnl-form">
                 <x-ad.check model="fotoWajib">Wajibkan foto diri tamu (kamera atau unggah foto)</x-ad.check>
-                <p class="ad-help m-0">Kamera di ponsel hanya bisa dibuka bila situs diakses lewat HTTPS. Tanpa HTTPS, tamu tetap bisa memotret lewat tombol <em>Unggah foto</em> yang membuka kamera ponsel.</p>
-                <p class="ad-help m-0">Kode kunjungan 4 angka diatur di halaman <a class="underline" href="{{ route('admin.kode') }}" wire:navigate>Kode kunjungan</a>.</p>
+                <p class="pnl-help m-0">Kamera di ponsel hanya bisa dibuka bila situs diakses lewat HTTPS. Tanpa HTTPS, tamu tetap bisa memotret lewat tombol <em>Unggah foto</em> yang membuka kamera ponsel.</p>
+                <p class="pnl-help m-0">Kode kunjungan 4 angka diatur di halaman <a class="underline" href="{{ route('admin.kode') }}" wire:navigate>Kode kunjungan</a>.</p>
             </div>
-            <div class="ad-card__foot"><span></span><x-dk.button type="submit" variant="primary" icon="save">Simpan</x-dk.button></div>
+            <div class="pnl-card__foot"><span></span><x-dk.button type="submit" variant="primary" icon="save">Simpan</x-dk.button></div>
         </form>
     @endif
 </div>

@@ -41,22 +41,22 @@ new #[Layout('layouts::admin')] #[Title('Dasbor')] class extends Component
 
 @php($tamu = $stats['tamu'])
 @php($web = $stats['web'])
-<div class="ad-grid" style="gap: var(--space-6)">
-    <div class="ad-pagehead">
+<div class="pnl-grid" style="gap: var(--space-6)">
+    <div class="pnl-pagehead">
         <div>
             <h1>{{ $sapaan }}, {{ \App\Support\Format::givenName(auth()->user()->name) }}</h1>
             <p>{{ \App\Support\Format::longDate() }} · <x-dk.status variant="sm" class="align-middle" /></p>
         </div>
-        <div class="ad-pagehead__actions">
+        <div class="pnl-pagehead__actions">
             <x-dk.button variant="secondary" icon="square-pen" :href="route('admin.berita.create')" wire:navigate>Tulis berita</x-dk.button>
             <x-dk.button variant="primary" icon="notebook-pen" :href="route('admin.buku-tamu')" wire:navigate>Buku tamu hari ini</x-dk.button>
         </div>
     </div>
 
-    <div class="ad-grid ad-grid--main">
-        <div class="ad-codecard">
-            <span class="ad-codecard__k">Kode kunjungan hari ini</span>
-            <div class="ad-code" aria-label="Kode {{ implode(' ', str_split($kode->code)) }}">
+    <div class="pnl-grid pnl-grid--main">
+        <div class="pnl-codecard">
+            <span class="pnl-codecard__k">Kode kunjungan hari ini</span>
+            <div class="pnl-code" aria-label="Kode {{ implode(' ', str_split($kode->code)) }}">
                 @foreach (str_split($kode->code) as $digit)
                     <span>{{ $digit }}</span>
                 @endforeach
@@ -68,7 +68,7 @@ new #[Layout('layouts::admin')] #[Title('Dasbor')] class extends Component
                 <x-dk.button variant="on-dark" icon="settings" :href="route('admin.kode')" wire:navigate>Atur</x-dk.button>
             </div>
         </div>
-        <div class="ad-grid ad-grid--2">
+        <div class="pnl-grid pnl-grid--2">
             <x-dk.stat-tile icon="user-check" label="Tamu hari ini" :value="$tamu['hariIni']" :delta="\App\Services\StatistikService::pct($tamu['hariIni'], $tamu['kemarinSamaJam'])" delta-label="vs jam yang sama kemarin" />
             <x-dk.stat-tile icon="users" label="Tamu bulan ini" :value="$tamu['bulanIni']" :delta="\App\Services\StatistikService::pct($tamu['bulanIni'], $tamu['bulanLaluSamaPeriode'])" delta-label="vs periode sama bulan lalu" />
             <x-dk.stat-tile icon="globe" label="Pengunjung web hari ini" :value="$web['hariIni']" :delta="\App\Services\StatistikService::pct($web['hariIni'], $web['kemarinSamaJam'])" delta-label="vs jam yang sama kemarin" />
@@ -76,9 +76,9 @@ new #[Layout('layouts::admin')] #[Title('Dasbor')] class extends Component
         </div>
     </div>
 
-    <div class="ad-card" x-data="visitorStats(@js(['tamu' => $tamu, 'web' => $web]))">
-        <div class="ad-card__head">
-            <h2 class="ad-card__title"><x-dk.icon name="chart-column" :size="18" /> Statistik kunjungan</h2>
+    <div class="pnl-card" x-data="visitorStats(@js(['tamu' => $tamu, 'web' => $web]))">
+        <div class="pnl-card__head">
+            <h2 class="pnl-card__title"><x-dk.icon name="chart-column" :size="18" /> Statistik kunjungan</h2>
             <div class="flex flex-wrap gap-2">
                 <div class="dk-tabs !mb-0" role="tablist" aria-label="Sumber data">
                     <button type="button" role="tab" class="dk-tab is-active" :class="{ 'is-active': sumber === 'tamu' }" :aria-selected="sumber === 'tamu'" @click="sumber = 'tamu'">Buku tamu</button>
@@ -91,7 +91,7 @@ new #[Layout('layouts::admin')] #[Title('Dasbor')] class extends Component
                 </div>
             </div>
         </div>
-        <div class="ad-card__body">
+        <div class="pnl-card__body">
             <div class="flex flex-wrap items-end gap-x-6 gap-y-2">
                 <div>
                     <div class="text-[13px] font-semibold text-ink-muted" x-text="S.label + ' · ' + ringkas.judul"></div>
@@ -108,17 +108,17 @@ new #[Layout('layouts::admin')] #[Title('Dasbor')] class extends Component
         </div>
     </div>
 
-    <div class="ad-grid ad-grid--main">
-        <div class="ad-card">
-            <div class="ad-card__head">
-                <h2 class="ad-card__title"><x-dk.icon name="notebook-pen" :size="18" /> Tamu terbaru hari ini</h2>
+    <div class="pnl-grid pnl-grid--main">
+        <div class="pnl-card">
+            <div class="pnl-card__head">
+                <h2 class="pnl-card__title"><x-dk.icon name="notebook-pen" :size="18" /> Tamu terbaru hari ini</h2>
                 <x-dk.button variant="ghost" size="sm" icon-right="arrow-right" :href="route('admin.buku-tamu')" wire:navigate>Semua tamu</x-dk.button>
             </div>
             @if ($tamuTerbaru->isEmpty())
                 <x-ad.empty icon="notebook-pen" title="Belum ada tamu hari ini" text="Tamu yang mengisi buku tamu akan muncul di sini." />
             @else
-                <div class="ad-tablewrap">
-                    <table class="ad-table">
+                <div class="pnl-tablewrap">
+                    <table class="pnl-table">
                         <thead><tr><th>No.</th><th>Jam</th><th>Tamu</th><th>Keperluan</th></tr></thead>
                         <tbody>
                             @foreach ($tamuTerbaru as $guest)
@@ -128,7 +128,7 @@ new #[Layout('layouts::admin')] #[Title('Dasbor')] class extends Component
                                     <td>
                                         <div class="flex items-center gap-3">
                                             @if ($guest->foto)
-                                                <img class="ad-thumb ad-thumb--portrait" src="{{ route('admin.buku-tamu.foto', $guest) }}" alt="" loading="lazy">
+                                                <img class="pnl-thumb pnl-thumb--portrait" src="{{ route('admin.buku-tamu.foto', $guest) }}" alt="" loading="lazy">
                                             @endif
                                             <span><strong>{{ $guest->nama }}</strong><small>{{ $guest->kategori }}{{ $guest->asal ? ' · '.$guest->asal : '' }}</small></span>
                                         </div>
@@ -142,28 +142,28 @@ new #[Layout('layouts::admin')] #[Title('Dasbor')] class extends Component
             @endif
         </div>
 
-        <div class="ad-grid" style="align-content: start">
-            <div class="ad-card">
-                <div class="ad-card__head">
-                    <h2 class="ad-card__title"><x-dk.icon name="inbox" :size="18" /> Pertanyaan baru</h2>
+        <div class="pnl-grid" style="align-content: start">
+            <div class="pnl-card">
+                <div class="pnl-card__head">
+                    <h2 class="pnl-card__title"><x-dk.icon name="inbox" :size="18" /> Pertanyaan baru</h2>
                     <x-dk.button variant="ghost" size="sm" icon-right="arrow-right" :href="route('admin.pertanyaan')" wire:navigate>Kotak masuk</x-dk.button>
                 </div>
                 @forelse ($pertanyaan as $q)
                     <a href="{{ route('admin.pertanyaan', ['buka' => $q->id]) }}" wire:navigate class="block border-b border-line px-5 py-3 text-ink no-underline last:border-b-0 hover:bg-laut-50">
-                        <strong class="block text-[14px]">{{ $q->nama }} <span class="ad-tag ad-tag--new ml-1">{{ $q->topik }}</span></strong>
+                        <strong class="block text-[14px]">{{ $q->nama }} <span class="pnl-tag pnl-tag--new ml-1">{{ $q->topik }}</span></strong>
                         <span class="block truncate text-[13px] text-ink-muted">{{ $q->isi }}</span>
                     </a>
                 @empty
                     <x-ad.empty icon="mail-open" title="Semua pertanyaan sudah dijawab" />
                 @endforelse
             </div>
-            <div class="ad-card">
-                <div class="ad-card__head">
-                    <h2 class="ad-card__title"><x-dk.icon name="newspaper" :size="18" /> Berita terakhir diubah</h2>
+            <div class="pnl-card">
+                <div class="pnl-card__head">
+                    <h2 class="pnl-card__title"><x-dk.icon name="newspaper" :size="18" /> Berita terakhir diubah</h2>
                 </div>
                 @foreach ($beritaTerbaru as $post)
                     <a href="{{ route('admin.berita.edit', $post) }}" wire:navigate class="flex items-center gap-3 border-b border-line px-5 py-3 text-ink no-underline last:border-b-0 hover:bg-laut-50">
-                        @if ($post->image_url)<img class="ad-thumb" src="{{ $post->image_url }}" alt="" loading="lazy">@endif
+                        @if ($post->image_url)<img class="pnl-thumb" src="{{ $post->image_url }}" alt="" loading="lazy">@endif
                         <span class="min-w-0">
                             <strong class="block truncate text-[14px]">{{ $post->title }}</strong>
                             <small class="text-[12.5px] text-ink-muted">{{ $post->category->name }} · {{ $post->is_published ? $post->date_label : 'Draf' }}</small>

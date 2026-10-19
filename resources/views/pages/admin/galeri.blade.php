@@ -170,20 +170,20 @@ new #[Layout('layouts::admin')] #[Title('Galeri')] class extends Component
 };
 ?>
 
-<div class="ad-grid" style="gap: var(--space-6)">
-    <div class="ad-pagehead">
+<div class="pnl-grid" style="gap: var(--space-6)">
+    <div class="pnl-pagehead">
         <div>
             <h1>Galeri foto &amp; video</h1>
             <p>Item paling atas tampil besar di galeri. Video diputar dari YouTube; keterangan dibuat singkat dan spesifik, misalnya <em>Pojok Baca Anak setiap Sabtu</em>.</p>
         </div>
-        <div class="ad-pagehead__actions">
+        <div class="pnl-pagehead__actions">
             <x-dk.button variant="secondary" icon="video" wire:click="tambah('video')">Tambah video</x-dk.button>
             <x-dk.button variant="primary" icon="image-plus" wire:click="tambah('foto')">Tambah foto</x-dk.button>
         </div>
     </div>
 
-    <div class="ad-card">
-        <div class="ad-toolbar">
+    <div class="pnl-card">
+        <div class="pnl-toolbar">
             <div class="dk-chips" role="tablist" aria-label="Jenis media">
                 @foreach (['semua' => 'Semua', 'foto' => 'Foto', 'video' => 'Video'] as $key => $label)
                     <button type="button" role="tab" @class(['dk-chip', 'is-active' => $jenis === $key]) aria-selected="{{ $jenis === $key ? 'true' : 'false' }}" wire:click="$set('jenis', '{{ $key }}')">{{ $label }}</button>
@@ -193,30 +193,30 @@ new #[Layout('layouts::admin')] #[Title('Galeri')] class extends Component
         @if ($items->isEmpty())
             <x-ad.empty icon="images" title="Belum ada media" />
         @else
-            <div class="ad-mediagrid">
+            <div class="pnl-mediagrid">
                 @foreach ($items as $item)
-                    <div class="ad-media" wire:key="media-{{ $item->id }}">
-                        <div class="ad-media__img">
+                    <div class="pnl-media" wire:key="media-{{ $item->id }}">
+                        <div class="pnl-media__img">
                             @if ($item->hasPoster())
                                 <x-dk.poster :line1="$item->poster_line1" :line2="$item->poster_line2" :sub="$item->poster_sub" :tone="$item->poster_tone" />
                             @elseif ($item->image_url)
                                 <img src="{{ $item->image_url }}" alt="" loading="lazy">
                             @endif
-                            <span class="ad-media__badge"><x-dk.badge :tone="$item->isVideo() ? 'lentera' : 'laut'" :icon="$item->isVideo() ? 'film' : 'image'" size="sm" on-image>{{ $item->type->label() }}{{ $item->duration ? ' · '.$item->duration : '' }}</x-dk.badge></span>
+                            <span class="pnl-media__badge"><x-dk.badge :tone="$item->isVideo() ? 'lentera' : 'laut'" :icon="$item->isVideo() ? 'film' : 'image'" size="sm" on-image>{{ $item->type->label() }}{{ $item->duration ? ' · '.$item->duration : '' }}</x-dk.badge></span>
                         </div>
-                        <div class="ad-media__body">
+                        <div class="pnl-media__body">
                             <strong>{{ $item->title }}</strong>
                             <small>{{ $item->date_label }}{{ $item->is_published ? '' : ' · Disembunyikan' }}</small>
                         </div>
-                        <div class="ad-media__foot">
+                        <div class="pnl-media__foot">
                             @if ($jenis === 'semua')
                                 <x-ad.sort-buttons :id="$item->id" :first="$loop->first" :last="$loop->last" />
                             @else
                                 <span></span>
                             @endif
-                            <div class="ad-actions">
+                            <div class="pnl-actions">
                                 <button type="button" class="dk-iconbtn" wire:click="ubah({{ $item->id }})" aria-label="Ubah {{ $item->title }}"><x-dk.icon name="pencil" :size="17" /></button>
-                                <button type="button" class="dk-iconbtn ad-iconbtn--danger" wire:click="hapus({{ $item->id }})" wire:confirm="Hapus {{ $item->title }}?" aria-label="Hapus"><x-dk.icon name="trash-2" :size="17" /></button>
+                                <button type="button" class="dk-iconbtn pnl-iconbtn--danger" wire:click="hapus({{ $item->id }})" wire:confirm="Hapus {{ $item->title }}?" aria-label="Hapus"><x-dk.icon name="trash-2" :size="17" /></button>
                             </div>
                         </div>
                     </div>
@@ -227,35 +227,35 @@ new #[Layout('layouts::admin')] #[Title('Galeri')] class extends Component
 
     @if ($showForm)
         <x-ad.modal :title="($editId ? 'Ubah ' : 'Tambah ').($type === 'video' ? 'video' : 'foto')" size="wide">
-            <form id="form-galeri" class="ad-form" wire:submit="simpan">
+            <form id="form-galeri" class="pnl-form" wire:submit="simpan">
                 <div class="dk-tabs !mb-0" role="tablist" aria-label="Jenis media">
                     <button type="button" role="tab" @class(['dk-tab', 'is-active' => $type === 'foto']) wire:click="$set('type', 'foto')">Foto</button>
                     <button type="button" role="tab" @class(['dk-tab', 'is-active' => $type === 'video']) wire:click="$set('type', 'video')">Video YouTube</button>
                 </div>
-                <x-ad.field label="Keterangan" for="title" error="title"><input id="title" class="ad-input" wire:model="title" maxlength="120" placeholder="Contoh: Pojok Baca Anak setiap Sabtu"></x-ad.field>
+                <x-ad.field label="Keterangan" for="title" error="title"><input id="title" class="pnl-input" wire:model="title" maxlength="120" placeholder="Contoh: Pojok Baca Anak setiap Sabtu"></x-ad.field>
                 @if ($type === 'video')
-                    <div class="ad-grid ad-grid--2">
-                        <x-ad.field label="Tautan YouTube" for="youtube_url" error="youtube_url"><input id="youtube_url" type="url" class="ad-input" wire:model="youtube_url" placeholder="https://www.youtube.com/watch?v=…"></x-ad.field>
-                        <x-ad.field label="Durasi" for="duration" error="duration" optional><input id="duration" class="ad-input" wire:model="duration" placeholder="3:24"></x-ad.field>
+                    <div class="pnl-grid pnl-grid--2">
+                        <x-ad.field label="Tautan YouTube" for="youtube_url" error="youtube_url"><input id="youtube_url" type="url" class="pnl-input" wire:model="youtube_url" placeholder="https://www.youtube.com/watch?v=…"></x-ad.field>
+                        <x-ad.field label="Durasi" for="duration" error="duration" optional><input id="duration" class="pnl-input" wire:model="duration" placeholder="3:24"></x-ad.field>
                     </div>
                 @endif
-                <x-ad.field label="Tanggal" for="taken_at" error="taken_at" optional><input id="taken_at" type="date" class="ad-input max-w-[220px]" wire:model="taken_at"></x-ad.field>
+                <x-ad.field label="Tanggal" for="taken_at" error="taken_at" optional><input id="taken_at" type="date" class="pnl-input max-w-[220px]" wire:model="taken_at"></x-ad.field>
 
                 <x-ad.check model="pakaiPoster" live>Pakai poster tipografis sebagai pengganti gambar</x-ad.check>
                 @if ($pakaiPoster)
-                    <div class="ad-grid ad-grid--main">
-                        <div class="ad-form">
-                            <div class="ad-grid ad-grid--2">
-                                <x-ad.field label="Baris 1" for="poster_line1" error="poster_line1"><input id="poster_line1" class="ad-input" wire:model.live.debounce.300ms="poster_line1" maxlength="30" placeholder="Bedah"></x-ad.field>
-                                <x-ad.field label="Baris 2 (miring)" for="poster_line2" error="poster_line2" optional><input id="poster_line2" class="ad-input" wire:model.live.debounce.300ms="poster_line2" maxlength="30" placeholder="Buku"></x-ad.field>
+                    <div class="pnl-grid pnl-grid--main">
+                        <div class="pnl-form">
+                            <div class="pnl-grid pnl-grid--2">
+                                <x-ad.field label="Baris 1" for="poster_line1" error="poster_line1"><input id="poster_line1" class="pnl-input" wire:model.live.debounce.300ms="poster_line1" maxlength="30" placeholder="Bedah"></x-ad.field>
+                                <x-ad.field label="Baris 2 (miring)" for="poster_line2" error="poster_line2" optional><input id="poster_line2" class="pnl-input" wire:model.live.debounce.300ms="poster_line2" maxlength="30" placeholder="Buku"></x-ad.field>
                             </div>
-                            <x-ad.field label="Keterangan poster" for="poster_sub" error="poster_sub" optional><input id="poster_sub" class="ad-input" wire:model.live.debounce.300ms="poster_sub" maxlength="80"></x-ad.field>
+                            <x-ad.field label="Keterangan poster" for="poster_sub" error="poster_sub" optional><input id="poster_sub" class="pnl-input" wire:model.live.debounce.300ms="poster_sub" maxlength="80"></x-ad.field>
                             <div class="flex gap-4">
-                                <label class="ad-check"><input type="radio" value="laut" wire:model.live="poster_tone"><span class="dk-tick__box" aria-hidden="true"><x-dk.icon name="check" :size="16" :stroke="3" /></span> Laut</label>
-                                <label class="ad-check"><input type="radio" value="lentera" wire:model.live="poster_tone"><span class="dk-tick__box" aria-hidden="true"><x-dk.icon name="check" :size="16" :stroke="3" /></span> Lentera</label>
+                                <label class="pnl-check"><input type="radio" value="laut" wire:model.live="poster_tone"><span class="dk-tick__box" aria-hidden="true"><x-dk.icon name="check" :size="16" :stroke="3" /></span> Laut</label>
+                                <label class="pnl-check"><input type="radio" value="lentera" wire:model.live="poster_tone"><span class="dk-tick__box" aria-hidden="true"><x-dk.icon name="check" :size="16" :stroke="3" /></span> Lentera</label>
                             </div>
                         </div>
-                        <div class="ad-media__img rounded-md">
+                        <div class="pnl-media__img rounded-md">
                             <x-dk.poster :line1="$poster_line1 ?: 'Judul'" :line2="$poster_line2" :sub="$poster_sub" :tone="$poster_tone" />
                         </div>
                     </div>
