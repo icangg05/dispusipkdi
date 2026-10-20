@@ -99,7 +99,14 @@ new #[Layout('layouts::bare')] #[Title('Masuk Admin')] class extends Component
                 <input id="email" type="email" class="pnl-input" wire:model="email" autocomplete="username" placeholder="Alamat email akun Anda" autofocus required>
             </x-ad.field>
             <x-ad.field label="Kata sandi" for="password" error="password">
-                <input id="password" type="password" class="pnl-input" wire:model="password" autocomplete="current-password" placeholder="Kata sandi akun Anda" required>
+                <div class="pnl-password" x-data="{ show: false }">
+                    <input id="password" type="password" :type="show ? 'text' : 'password'" class="pnl-input" wire:model="password" autocomplete="current-password" placeholder="Kata sandi akun Anda" required>
+                    {{-- wire:ignore stops a re-render (after a failed sign-in) from desyncing the icon from the field. --}}
+                    <button type="button" class="pnl-password__toggle" @click="show = ! show" aria-controls="password" :aria-pressed="show" :aria-label="show ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'" aria-label="Tampilkan kata sandi" wire:ignore x-cloak>
+                        <span x-show="! show"><x-dk.icon name="eye" :size="20" /></span>
+                        <span x-show="show" x-cloak><x-dk.icon name="eye-off" :size="20" /></span>
+                    </button>
+                </div>
             </x-ad.field>
             <x-ad.check model="remember">Ingat saya di perangkat ini</x-ad.check>
             @if ($sisaKunci > 0)

@@ -164,6 +164,12 @@
 .pnl-lock .dk-icon { flex: none; margin-top: 1px; color: var(--danger); }
 .pnl-lock strong { font-variant-numeric: tabular-nums; }
 .pnl-login__submit { min-width: 0; margin: 0; padding: 0; border: 0; }
+.pnl-password { position: relative; }
+.pnl-password .pnl-input { padding-right: 48px; }
+.pnl-password__toggle { position: absolute; top: 50%; right: 4px; width: 38px; height: 38px; display: grid; place-items: center; margin-top: -19px; padding: 0; border: 0; border-radius: var(--radius-xs); background: none; color: var(--ink-muted); cursor: pointer; transition: color .15s, background-color .15s; }
+.pnl-password__toggle:hover { color: var(--laut-700); background: var(--laut-50); }
+.pnl-password__toggle:focus-visible { outline: 2px solid var(--laut-700); outline-offset: 0; }
+.pnl-password__toggle span { display: grid; }
 
 /* ---------- Misc ---------- */
 .pnl-kv { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 8px var(--space-4); margin: 0; font-size: 14px; line-height: 21px; }

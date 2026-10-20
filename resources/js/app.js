@@ -13,6 +13,7 @@ import visitorChart from './dispusip/chart';
 import visitorStats from './dispusip/stats';
 import { formatNumber } from './dispusip/format';
 import { startReveal } from './dispusip/reveal';
+import { startSidebarScroll } from './dispusip/sidebar-scroll';
 import { startTableLabels } from './dispusip/table-labels';
 
 /*
@@ -44,6 +45,7 @@ function start() {
     Alpine.magic('fmt', () => formatNumber);
 
     startReveal();
+    startSidebarScroll();
     startTableLabels();
     Livewire.start();
 }
