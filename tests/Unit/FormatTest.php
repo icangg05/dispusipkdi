@@ -17,6 +17,9 @@ class FormatTest extends TestCase
         $this->assertSame('1,5 rb', Format::compact(1500));
         $this->assertSame('950', Format::compact(950));
         $this->assertSame('08.00', Format::clock(480));
+        $this->assertSame('512 B', Format::bytes(512));
+        $this->assertSame('16 KB', Format::bytes(16384));
+        $this->assertSame('2,3 MB', Format::bytes(2411724));
     }
 
     public function test_whatsapp_numbers_become_international_links(): void

@@ -19,6 +19,7 @@
         'Situs' => [
             ['label' => 'Pengaturan', 'icon' => 'settings', 'route' => 'admin.pengaturan', 'active' => 'admin.pengaturan'],
             ['label' => 'Akun saya', 'icon' => 'user-cog', 'route' => 'admin.akun', 'active' => 'admin.akun'],
+            ['label' => 'Backup database', 'icon' => 'database', 'route' => 'admin.backup', 'active' => 'admin.backup*'],
         ],
     ];
     $initials = collect(preg_split('/\s+/', trim($user->name)))->take(2)->map(fn ($w) => mb_strtoupper(mb_substr($w, 0, 1)))->join('');

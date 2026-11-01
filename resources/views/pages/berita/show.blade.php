@@ -44,11 +44,11 @@ new #[Layout('layouts::public')] class extends Component
 
 <div>
     <x-dk.page-top :crumbs="[['label' => 'Beranda', 'href' => route('beranda')], ['label' => 'Berita', 'href' => route('berita.index')], ['label' => $post->category->name, 'href' => route('berita.index', ['kategori' => $post->category->slug])], ['label' => \Illuminate\Support\Str::limit($post->title, 48)]]"
-        :title="$post->title" />
+        :title="$post->title" class="dk-pagetop--article" />
 
     <x-dk.section tight>
         <div class="dk-article">
-            <article>
+            <article x-data="articleZoom" @keydown.window="key($event)">
                 <header class="dk-article__head">
                     <x-dk.badge :category="$post->category" />
                     <div class="dk-article__meta">
@@ -58,7 +58,10 @@ new #[Layout('layouts::public')] class extends Component
                     </div>
                 </header>
                 @if ($post->image_url)
-                    <figure class="dk-article__cover"><img src="{{ $post->image_url }}" alt="{{ $post->title }}"></figure>
+                    <figure class="dk-article__cover">
+                        <img src="{{ $post->image_url }}" alt="{{ $post->title }}" data-zoom>
+                        <span class="dk-article__zoomhint" aria-hidden="true"><x-dk.icon name="maximize-2" :size="14" /> Perbesar</span>
+                    </figure>
                 @endif
                 @if ($post->excerpt)
                     <p class="dk-article__lede">{{ $post->excerpt }}</p>
@@ -73,6 +76,28 @@ new #[Layout('layouts::public')] class extends Component
                         <span x-text="copied ? 'Tautan disalin' : 'Salin tautan'">Salin tautan</span>
                     </x-dk.button>
                 </div>
+
+                <template x-teleport="body">
+                    <div class="dk-lightbox dk-zoom" :class="{ 'is-full': full }" role="dialog" aria-modal="true" aria-label="Gambar diperbesar" x-show="cur" x-cloak
+                        @click.self="close()" @touchstart.passive="swipeStart($event)" @touchend="swipeEnd($event)">
+                        <template x-if="cur">
+                            <figure class="dk-zoom__fig">
+                                <img class="dk-zoom__img" :src="cur.src" :alt="cur.alt" @click="toggleFull($event)">
+                                <figcaption class="dk-zoom__cap" x-show="!full && (cur.alt || images.length > 1)">
+                                    <span x-text="cur.alt"></span>
+                                    <small x-show="images.length > 1" x-text="(open + 1) + ' / ' + images.length"></small>
+                                </figcaption>
+                            </figure>
+                        </template>
+                        <button type="button" class="dk-iconbtn dk-iconbtn--dark dk-zoom__btn dk-zoom__btn--close" x-ref="close" @click="close()" aria-label="Tutup"><x-dk.icon name="x" /></button>
+                        <template x-if="images.length > 1">
+                            <span>
+                                <button type="button" class="dk-iconbtn dk-iconbtn--dark dk-zoom__btn dk-zoom__btn--prev" @click="step(-1)" aria-label="Gambar sebelumnya"><x-dk.icon name="chevron-left" /></button>
+                                <button type="button" class="dk-iconbtn dk-iconbtn--dark dk-zoom__btn dk-zoom__btn--next" @click="step(1)" aria-label="Gambar berikutnya"><x-dk.icon name="chevron-right" /></button>
+                            </span>
+                        </template>
+                    </div>
+                </template>
             </article>
 
             <aside class="dk-aside" aria-label="Berita lain">

@@ -79,6 +79,7 @@ img.dk-hero__bg { width: 100%; height: 100%; object-fit: cover; }
 .dk-search input:hover { border-color: var(--ink); }
 .dk-search input:focus { outline: none; border-color: var(--laut-700); box-shadow: var(--focus-ring); }
 .dk-newscols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); }
+.dk-newscols .dk-news__title { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .dk-result { margin: 0 0 var(--space-5); font-size: 14px; color: var(--ink-muted); }
 .dk-result strong { color: var(--ink); }
 
@@ -129,6 +130,35 @@ img.dk-hero__bg { width: 100%; height: 100%; object-fit: cover; }
 .dk-prose table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 22px; }
 .dk-prose th, .dk-prose td { padding: 8px 10px; border-bottom: 1px solid var(--line); text-align: left; }
 .dk-prose th { border-bottom: 3px double var(--line-control); color: var(--ink-muted); font-size: 13px; }
+
+/* ---------- Article: the cover and body pictures open enlarged (resources/js/dispusip/article-zoom.js) ---------- */
+.dk-article__cover { position: relative; }
+.dk-article__cover:has(.dk-zoomable:focus-visible) { box-shadow: var(--focus-ring); }
+.dk-article__zoomhint { position: absolute; right: 12px; bottom: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: var(--radius-xs); background: color-mix(in srgb, var(--laut-900) 72%, transparent); color: var(--on-laut); font-size: 12px; line-height: 18px; font-weight: 600; pointer-events: none; transition: background-color .2s; }
+.dk-article__cover:hover .dk-article__zoomhint { background: var(--laut-900); }
+.dk-article__cover:not(:has(.dk-zoomable)) .dk-article__zoomhint { display: none; }
+.dk-zoomable { cursor: zoom-in; }
+.dk-zoom { display: flex; overflow: auto; overscroll-behavior: contain; padding: var(--space-16) 76px; }
+.dk-zoom__fig { margin: auto; display: grid; justify-items: center; gap: var(--space-3); }
+.dk-zoom__img { display: block; width: auto; height: auto; max-width: min(1280px, calc(100vw - 152px)); max-height: calc(100vh - 168px); max-height: calc(100dvh - 168px); border-radius: var(--radius-md); background: var(--surface-raised); box-shadow: var(--shadow-lg); cursor: zoom-in; }
+.dk-zoom__cap { display: grid; justify-items: center; gap: 2px; max-width: 70ch; color: var(--on-laut); font-size: 14px; line-height: 20px; text-align: center; }
+.dk-zoom__cap small { color: var(--on-laut-muted); font-size: 13px; font-variant-numeric: tabular-nums; }
+.dk-zoom.is-full { padding: 0; }
+.dk-zoom.is-full .dk-zoom__img { max-width: none; max-height: none; border-radius: 0; cursor: zoom-out; }
+.dk-zoom__btn { position: fixed; z-index: 1; }
+.dk-zoom__btn--close { top: var(--space-4); right: var(--space-4); }
+.dk-zoom__btn--prev, .dk-zoom__btn--next { top: 50%; margin-top: -22px; }
+.dk-zoom__btn--prev { left: var(--space-4); }
+.dk-zoom__btn--next { right: var(--space-4); }
+
+/* ---------- Header: the satisfaction survey (SPBE) opens in a dialog ---------- */
+.dk-survei { padding: var(--space-4); }
+.dk-survei__box { width: min(896px, 100%); height: min(832px, calc(100vh - 32px)); height: min(832px, calc(100dvh - 32px)); display: flex; flex-direction: column; overflow: hidden; border-radius: var(--radius-lg); background: var(--surface-raised); box-shadow: var(--shadow-lg); }
+.dk-survei__head { display: flex; align-items: center; gap: var(--space-3); padding: 8px 8px 8px var(--space-5); border-bottom: 1px solid var(--line); }
+.dk-survei__head h2 { margin: 0; font-size: 15px; line-height: 22px; font-weight: 700; }
+.dk-survei__open { margin-left: auto; display: inline-flex; align-items: center; gap: 6px; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--link); text-decoration: none; }
+.dk-survei__open:hover { text-decoration: underline; text-underline-offset: 3px; }
+.dk-survei iframe { flex: 1; min-height: 0; width: 100%; border: 0; background: #ffffff; }
 
 /* ---------- Profile page ---------- */
 .dk-struktur { margin: 0; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface-raised); }
@@ -283,8 +313,18 @@ legend.dk-field__label { margin-bottom: 8px; }
   .dk-kode input, .dk-form .dk-kode input { width: 48px; height: 52px; font-size: 24px; }
   .dk-newscols { grid-template-columns: minmax(0, 1fr); }
   .dk-article__title { font-size: 28px; line-height: 36px; }
+  .dk-pagetop--article .dk-pagehead__title { font-size: 24px; line-height: 32px; text-wrap: pretty; }
+  .dk-survei { padding: var(--space-2); }
+  .dk-survei__box { height: calc(100vh - 16px); height: calc(100dvh - 16px); }
+  .dk-survei__head { padding-left: var(--space-4); }
+  .dk-survei__open span { display: none; }
+  .dk-zoom { padding: var(--space-16) var(--space-3) 80px; }
+  .dk-zoom__img { max-width: calc(100vw - 24px); max-height: calc(100vh - 168px); max-height: calc(100dvh - 168px); }
+  .dk-zoom__btn--prev, .dk-zoom__btn--next { top: auto; bottom: var(--space-4); margin-top: 0; }
   .dk-article__lede { font-size: 17px; line-height: 28px; }
   .dk-prose { font-size: 16px; line-height: 28px; }
+  .dk-prose h2 { font-size: 21px; line-height: 29px; }
+  .dk-prose h3 { font-size: 18px; line-height: 26px; }
   .dk-search { max-width: none; }
   .dk-pager { justify-content: center; }
   .dk-panel { padding: var(--space-4); }

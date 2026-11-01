@@ -65,6 +65,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Survei kepuasan masyarakat
+    |--------------------------------------------------------------------------
+    |
+    | Tautan embed survei digital SPBE (surveidigital.spbe.go.id) untuk layanan Dispusip.
+    | Dibuka dalam dialog dari tombol "Survei Kepuasan" di header. Kosong berarti tombolnya tidak tampil.
+    |
+    */
+
+    'survei_url' => '',
+
+    /*
+    |--------------------------------------------------------------------------
     | Statistik pengunjung website
     |--------------------------------------------------------------------------
     |

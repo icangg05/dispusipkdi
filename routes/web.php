@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DatabaseBackupController;
 use App\Http\Controllers\Admin\GuestExportController;
 use App\Http\Controllers\Admin\GuestPhotoController;
 use App\Http\Controllers\Admin\KioskController;
@@ -63,6 +64,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::livewire('/tanya-jawab', 'pages::admin.faq')->name('faq');
         Route::livewire('/pengaturan', 'pages::admin.pengaturan')->name('pengaturan');
         Route::livewire('/akun', 'pages::admin.akun')->name('akun');
+        Route::livewire('/backup', 'pages::admin.backup')->name('backup');
+        Route::get('/backup/unduh', DatabaseBackupController::class)->name('backup.unduh');
 
         Route::post('/keluar', LogoutController::class)->name('logout');
     });

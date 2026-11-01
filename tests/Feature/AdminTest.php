@@ -69,7 +69,7 @@ class AdminTest extends TestCase
 
         $this->actingAs(User::factory()->create());
 
-        foreach (['admin.dashboard', 'admin.buku-tamu', 'admin.kode', 'admin.kode.layar', 'admin.pertanyaan', 'admin.berita.index', 'admin.berita.create', 'admin.kategori', 'admin.galeri', 'admin.slider', 'admin.layanan', 'admin.faq', 'admin.pengaturan', 'admin.akun'] as $route) {
+        foreach (['admin.dashboard', 'admin.buku-tamu', 'admin.kode', 'admin.kode.layar', 'admin.pertanyaan', 'admin.berita.index', 'admin.berita.create', 'admin.kategori', 'admin.galeri', 'admin.slider', 'admin.layanan', 'admin.faq', 'admin.pengaturan', 'admin.akun', 'admin.backup'] as $route) {
             $this->get(route($route))->assertOk();
         }
 

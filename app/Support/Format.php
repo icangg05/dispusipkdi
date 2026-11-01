@@ -63,6 +63,25 @@ class Format
         return (fmod($k, 1.0) === 0.0 ? self::number($k) : self::number($k, 1)).' rb';
     }
 
+    /**
+     * File size: 2.411.724 → "2,3 MB".
+     */
+    public static function bytes(int $bytes): string
+    {
+        $units = ['B', 'KB', 'MB', 'GB'];
+        $value = (float) $bytes;
+        $unit = 0;
+
+        while ($value >= 1024 && $unit < count($units) - 1) {
+            $value /= 1024;
+            $unit++;
+        }
+
+        $value = round($value, 1);
+
+        return (fmod($value, 1.0) === 0.0 ? self::number($value) : self::number($value, 1)).' '.$units[$unit];
+    }
+
     public static function shortDate(?CarbonInterface $date): string
     {
         return $date ? $date->day.' '.self::BULAN_PENDEK[$date->month - 1].' '.$date->year : '';

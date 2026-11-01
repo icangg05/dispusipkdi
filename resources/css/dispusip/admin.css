@@ -89,7 +89,7 @@
 .pnl-textarea { min-height: 88px; resize: vertical; line-height: 24px; }
 .pnl-textarea--tall { min-height: 340px; }
 .pnl-help { font-size: 13px; line-height: 18px; color: var(--ink-muted); }
-.pnl-help code { padding: 1px 5px; border-radius: var(--radius-xs); background: var(--surface-sunken); font-size: 12.5px; }
+.pnl-help code, .pnl-card__body code { padding: 1px 5px; border-radius: var(--radius-xs); background: var(--surface-sunken); font-size: 12.5px; }
 .pnl-error { display: flex; align-items: center; gap: 6px; font-size: 13px; line-height: 18px; font-weight: 600; color: var(--danger); }
 .pnl-field.has-error .pnl-input, .pnl-field.has-error .pnl-select, .pnl-field.has-error .pnl-textarea { border-color: var(--danger); }
 .pnl-fieldset { margin: 0; padding: 0; border: 0; display: grid; gap: var(--space-4); }

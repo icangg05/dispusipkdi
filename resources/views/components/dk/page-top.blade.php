@@ -1,6 +1,6 @@
 {{-- Inner-page top: regular navbar + PageHeader sharing the surface-sunken band. --}}
 @props(['crumbs' => [], 'title', 'text' => null])
-<div class="dk-pagetop">
+<div {{ $attributes->class('dk-pagetop') }}>
     <x-dk.navbar />
     <div class="dk-container dk-pagehead">
         <div class="dk-pagehead__main">

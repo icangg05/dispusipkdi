@@ -1,11 +1,13 @@
 import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
 import a11yMenu, { restoreSaved as restoreA11y } from './dispusip/a11y';
+import articleZoom from './dispusip/article-zoom';
 import clock from './dispusip/clock';
 import countUp from './dispusip/count-up';
 import gallery from './dispusip/gallery';
 import guestbookDone from './dispusip/guestbook-done';
 import heroSlider from './dispusip/hero';
 import lockCountdown from './dispusip/lock-countdown';
+import navbar from './dispusip/navbar';
 import qrCode from './dispusip/qr';
 import selfieCamera from './dispusip/camera';
 import visitCode from './dispusip/visit-code';
@@ -31,12 +33,14 @@ function start() {
     document.addEventListener('livewire:navigating', (e) => e.detail.onSwap(restoreA11y));
 
     Alpine.data('a11yMenu', a11yMenu);
+    Alpine.data('articleZoom', articleZoom);
     Alpine.data('clock', clock);
     Alpine.data('countUp', countUp);
     Alpine.data('gallery', gallery);
     Alpine.data('guestbookDone', guestbookDone);
     Alpine.data('heroSlider', heroSlider);
     Alpine.data('lockCountdown', lockCountdown);
+    Alpine.data('navbar', navbar);
     Alpine.data('qrCode', qrCode);
     Alpine.data('selfieCamera', selfieCamera);
     Alpine.data('visitCode', visitCode);
