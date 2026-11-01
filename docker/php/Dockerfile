@@ -3,7 +3,7 @@
 #   production  the app with code, vendor/ and built assets baked in; only storage/ and .env come from the host
 #   web         nginx serving the built public/ directory (compose.prod.yml)
 
-FROM php:8.5-fpm-alpine AS base
+FROM php:8.5.12-fpm-alpine AS base
 
 ARG UID=1000
 ARG GID=1000
