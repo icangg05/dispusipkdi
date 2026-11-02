@@ -80,14 +80,14 @@ new #[Layout('layouts::admin')] class extends Component
             'author' => ['nullable', 'string', 'max:80'],
             'is_published' => ['boolean'],
             'published_at' => ['nullable', 'date'],
-            'gambar' => ['nullable', 'image', 'max:4096'],
+            'gambar' => ['nullable', 'image', 'max:'.site()->batasGambarMb() * 1024],
         ], [
             'title.required' => 'Tulis judul berita.',
             'category_id.required' => 'Pilih kategori.',
             'body.required' => 'Tulis isi berita.',
             'slug.alpha_dash' => 'Alamat hanya boleh berisi huruf, angka, dan tanda hubung.',
             'gambar.image' => 'Berkas harus berupa gambar.',
-            'gambar.max' => 'Ukuran gambar paling besar 4 MB.',
+            'gambar.max' => 'Ukuran gambar paling besar '.site()->batasGambarMb().' MB.',
         ]);
 
         $post = $this->post ?? new Post(['user_id' => auth()->id()]);

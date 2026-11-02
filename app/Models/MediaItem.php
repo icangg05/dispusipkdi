@@ -51,17 +51,20 @@ class MediaItem extends Model
     /**
      * The 11-character YouTube id taken from any common YouTube link form.
      */
+    public static function youtubeIdFrom(?string $url): ?string
+    {
+        if (! $url) {
+            return null;
+        }
+
+        preg_match('~(?:youtu\.be/|youtube(?:-nocookie)?\.com/(?:watch\?(?:.*&)?v=|embed/|shorts/|live/|v/))([A-Za-z0-9_-]{11})~', $url, $m);
+
+        return $m[1] ?? null;
+    }
+
     protected function youtubeId(): Attribute
     {
-        return Attribute::get(function (): ?string {
-            if (! $this->youtube_url) {
-                return null;
-            }
-
-            preg_match('~(?:youtu\.be/|youtube(?:-nocookie)?\.com/(?:watch\?(?:.*&)?v=|embed/|shorts/|live/|v/))([A-Za-z0-9_-]{11})~', $this->youtube_url, $m);
-
-            return $m[1] ?? null;
-        });
+        return Attribute::get(fn (): ?string => self::youtubeIdFrom($this->youtube_url));
     }
 
     protected function embedUrl(): Attribute

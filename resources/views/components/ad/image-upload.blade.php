@@ -26,7 +26,7 @@
             <span class="pnl-help">{{ \Illuminate\Support\Str::limit($file->getClientOriginalName(), 40) }}</span>
         @endif
         <span class="pnl-help" wire:loading wire:target="{{ $model }}">Mengunggah…</span>
-        <span class="pnl-help">JPG, PNG, atau WebP, paling besar 4 MB. Gambar otomatis dikompres dan disimpan sebagai WebP.</span>
+        <span class="pnl-help">JPG, PNG, atau WebP, paling besar {{ site()->batasGambarMb() }} MB. Gambar otomatis dikompres dan disimpan sebagai WebP.</span>
         {{ $slot }}
     </div>
 </div>

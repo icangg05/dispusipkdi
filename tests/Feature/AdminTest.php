@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\Guest;
+use App\Models\MediaItem;
 use App\Models\Post;
 use App\Models\Question;
 use App\Models\User;
@@ -119,6 +120,44 @@ class AdminTest extends TestCase
         $this->assertTrue($post->isVisible());
         Storage::disk('public')->assertExists($post->image);
         $this->assertStringEndsWith('.webp', $post->image);
+    }
+
+    public function test_new_media_goes_to_the_top_without_a_negative_sort(): void
+    {
+        $first = MediaItem::factory()->create(['sort' => 0]);
+        $second = MediaItem::factory()->create(['sort' => 1]);
+
+        Livewire::actingAs(User::factory()->create())
+            ->test('pages::admin.galeri')
+            ->call('tambah', 'video')
+            ->set('title', 'Pemenang Lomba Video Konten Literasi')
+            ->set('youtube_url', 'https://www.youtube.com/watch?v=RaUm0zvQdgE&list=RDRaUm0zvQdgE&start_radio=1&pp=oAcB')
+            ->call('simpan')
+            ->assertHasNoErrors();
+
+        $this->assertSame(
+            ['Pemenang Lomba Video Konten Literasi', $first->title, $second->title],
+            MediaItem::query()->orderBy('sort')->orderBy('id')->pluck('title')->all(),
+        );
+        $this->assertSame(0, MediaItem::query()->min('sort'));
+    }
+
+    public function test_the_video_form_previews_the_pasted_youtube_link(): void
+    {
+        $form = Livewire::actingAs(User::factory()->create())
+            ->test('pages::admin.galeri')
+            ->call('tambah', 'video')
+            ->set('title', 'Tur virtual koleksi')
+            ->set('youtube_url', 'https://www.youtube.com/watch?v=RaUm0zvQdgE&list=RDRaUm0zvQdgE&start_radio=1&pp=oAcB')
+            ->assertSeeHtml("youtubePreview('RaUm0zvQdgE')");
+
+        $form->set('youtube_url', 'https://www.youtube.com/@dispusipkendari')
+            ->assertDontSeeHtml('youtubePreview(')
+            ->assertSee('Tautan belum dikenali sebagai video YouTube.')
+            ->call('simpan')
+            ->assertHasErrors(['youtube_url']);
+
+        $this->assertSame(0, MediaItem::query()->count());
     }
 
     public function test_site_images_are_compressed_to_the_size_each_one_needs(): void

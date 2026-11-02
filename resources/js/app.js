@@ -13,6 +13,7 @@ import selfieCamera from './dispusip/camera';
 import visitCode from './dispusip/visit-code';
 import visitorChart from './dispusip/chart';
 import visitorStats from './dispusip/stats';
+import youtubePreview from './dispusip/youtube-preview';
 import { formatNumber } from './dispusip/format';
 import { startReveal } from './dispusip/reveal';
 import { startSidebarScroll } from './dispusip/sidebar-scroll';
@@ -46,6 +47,7 @@ function start() {
     Alpine.data('visitCode', visitCode);
     Alpine.data('visitorChart', visitorChart);
     Alpine.data('visitorStats', visitorStats);
+    Alpine.data('youtubePreview', youtubePreview);
     Alpine.magic('fmt', () => formatNumber);
 
     startReveal();

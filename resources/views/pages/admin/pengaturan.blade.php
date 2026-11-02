@@ -33,6 +33,9 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
 
     public bool $fotoWajib = true;
 
+    /** @var array{gambar_mb: int|string, berkas_mb: int|string} */
+    public array $unggah = [];
+
     public $logo = null;
 
     public $gambarUtama = null;
@@ -74,6 +77,7 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
         }
 
         $this->fotoWajib = $settings->fotoTamuWajib();
+        $this->unggah = ['gambar_mb' => $settings->batasGambarMb(), 'berkas_mb' => $settings->batasBerkasMb()];
     }
 
     protected function time(int $minutes): string
@@ -156,16 +160,17 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
             'profil.tugas.*.icon' => ['required', Rule::in(config('dispusip.ikon_pilihan'))],
             'profil.tugas.*.title' => ['required', 'string', 'max:60'],
             'profil.tugas.*.text' => ['required', 'string', 'max:160'],
-            'logo' => ['nullable', 'image', 'max:2048'],
-            'gambarUtama' => ['nullable', 'image', 'max:4096'],
-            'gambarKedua' => ['nullable', 'image', 'max:4096'],
-            'struktur' => ['nullable', 'image', 'max:6144'],
+            'logo' => ['nullable', 'image', 'max:'.$settings->batasGambarMb() * 1024],
+            'gambarUtama' => ['nullable', 'image', 'max:'.$settings->batasGambarMb() * 1024],
+            'gambarKedua' => ['nullable', 'image', 'max:'.$settings->batasGambarMb() * 1024],
+            'struktur' => ['nullable', 'image', 'max:'.$settings->batasGambarMb() * 1024],
         ], [
             'required' => 'Kolom ini wajib diisi.',
             'profil.misi.min' => 'Tulis minimal satu misi.',
             'profil.tugas.min' => 'Tulis minimal satu tugas.',
             'image' => 'Berkas harus berupa gambar.',
             'max' => 'Terlalu panjang atau terlalu besar.',
+            ...array_fill_keys(['logo.max', 'gambarUtama.max', 'gambarKedua.max', 'struktur.max'], 'Ukuran gambar paling besar '.$settings->batasGambarMb().' MB.'),
         ]);
 
         if ($this->logo) {
@@ -287,6 +292,24 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
         $this->dispatch('toast', message: 'Pengaturan buku tamu disimpan.');
     }
 
+    public function simpanUnggah(SiteSettings $settings): void
+    {
+        $maks = SiteSettings::BATAS_UNGGAH_MAKS_MB;
+
+        $data = $this->validate([
+            'unggah.gambar_mb' => ['required', 'integer', 'min:1', 'max:'.$maks],
+            'unggah.berkas_mb' => ['required', 'integer', 'min:1', 'max:'.$maks],
+        ], [
+            'required' => 'Kolom ini wajib diisi.',
+            'integer' => 'Tulis angka bulat dalam MB.',
+            'min' => 'Paling kecil 1 MB.',
+            'max' => 'Paling besar '.$maks.' MB, batas yang diizinkan server.',
+        ]);
+
+        $settings->put('unggah', array_map('intval', $data['unggah']));
+        $this->dispatch('toast', message: 'Batas unggah disimpan.');
+    }
+
     public function with(): array
     {
         return ['hariUrut' => Jadwal::URUTAN, 'namaHari' => Jadwal::HARI];
@@ -302,6 +325,7 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
         'jadwal' => ['Jam layanan', 'clock'],
         'angka' => ['Angka utama', 'chart-column'],
         'bukutamu' => ['Buku tamu', 'notebook-pen'],
+        'unggah' => ['Unggah berkas', 'upload'],
     ];
 @endphp
 <div class="pnl-grid" style="gap: var(--space-6)">
@@ -516,6 +540,24 @@ new #[Layout('layouts::admin')] #[Title('Pengaturan')] class extends Component
                 <x-ad.check model="fotoWajib">Wajibkan foto diri tamu (kamera atau unggah foto)</x-ad.check>
                 <p class="pnl-help m-0">Kamera di ponsel hanya bisa dibuka bila situs diakses lewat HTTPS. Tanpa HTTPS, tamu tetap bisa memotret lewat tombol <em>Unggah foto</em> yang membuka kamera ponsel.</p>
                 <p class="pnl-help m-0">Kode kunjungan 4 angka diatur di halaman <a class="underline" href="{{ route('admin.kode') }}" wire:navigate>Kode kunjungan</a>.</p>
+            </div>
+            <div class="pnl-card__foot"><span></span><x-dk.button type="submit" variant="primary" icon="save">Simpan</x-dk.button></div>
+        </form>
+    @endif
+
+    @if ($tab === 'unggah')
+        <form class="pnl-card" wire:submit="simpanUnggah">
+            <div class="pnl-card__head"><h2 class="pnl-card__title"><x-dk.icon name="upload" :size="18" /> Unggah berkas</h2></div>
+            <div class="pnl-card__body pnl-form">
+                <div class="pnl-grid pnl-grid--2">
+                    <x-ad.field label="Batas ukuran gambar (MB)" for="unggah-gambar" error="unggah.gambar_mb" help="Berlaku untuk sampul berita, galeri, slider, logo, dan gambar profil.">
+                        <input id="unggah-gambar" type="number" min="1" max="{{ \App\Support\SiteSettings::BATAS_UNGGAH_MAKS_MB }}" step="1" class="pnl-input max-w-[160px]" wire:model="unggah.gambar_mb">
+                    </x-ad.field>
+                    <x-ad.field label="Batas ukuran berkas lain (MB)" for="unggah-berkas" error="unggah.berkas_mb" help="Untuk dokumen seperti PDF.">
+                        <input id="unggah-berkas" type="number" min="1" max="{{ \App\Support\SiteSettings::BATAS_UNGGAH_MAKS_MB }}" step="1" class="pnl-input max-w-[160px]" wire:model="unggah.berkas_mb">
+                    </x-ad.field>
+                </div>
+                <p class="pnl-help m-0">Paling besar {{ \App\Support\SiteSettings::BATAS_UNGGAH_MAKS_MB }} MB, batas yang diizinkan server. Gambar tetap dikompres otomatis menjadi WebP setelah diunggah, jadi batas besar tidak membuat situs berat.</p>
             </div>
             <div class="pnl-card__foot"><span></span><x-dk.button type="submit" variant="primary" icon="save">Simpan</x-dk.button></div>
         </form>

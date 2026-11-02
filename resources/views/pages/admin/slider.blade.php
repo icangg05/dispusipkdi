@@ -70,14 +70,14 @@ new #[Layout('layouts::admin')] #[Title('Slider beranda')] class extends Compone
             'accent' => ['nullable', 'string', 'max:60'],
             'text' => ['nullable', 'string', 'max:200'],
             'is_active' => ['boolean'],
-            'gambar' => [$this->gambarLama ? 'nullable' : 'required', 'image', 'max:4096'],
+            'gambar' => [$this->gambarLama ? 'nullable' : 'required', 'image', 'max:'.site()->batasGambarMb() * 1024],
         ], [
             'caption.required' => 'Tulis nama singkat slide (tampil di penanda slide).',
             'kicker.required' => 'Tulis label kecil di atas judul.',
             'title.required' => 'Tulis judul.',
             'gambar.required' => 'Pilih foto latar.',
             'gambar.image' => 'Berkas harus berupa gambar.',
-            'gambar.max' => 'Ukuran gambar paling besar 4 MB.',
+            'gambar.max' => 'Ukuran gambar paling besar '.site()->batasGambarMb().' MB.',
         ]);
 
         $image = $this->gambar ? Media::store($this->gambar, 'slider', $this->gambarLama) : $this->gambarLama;

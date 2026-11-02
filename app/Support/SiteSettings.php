@@ -17,7 +17,10 @@ class SiteSettings
 {
     public const CACHE_KEY = 'site-settings';
 
-    public const GROUPS = ['identitas', 'profil', 'kontak', 'sosmed', 'jadwal', 'angka', 'bukutamu', 'balasan'];
+    public const GROUPS = ['identitas', 'profil', 'kontak', 'sosmed', 'jadwal', 'angka', 'bukutamu', 'balasan', 'unggah'];
+
+    /** Largest upload limit an admin can set, in MB. php.ini, nginx and Livewire's temporary upload rule allow this much. */
+    public const BATAS_UNGGAH_MAKS_MB = 150;
 
     public const PLATFORMS = [
         'instagram' => 'Instagram',
@@ -93,6 +96,10 @@ class SiteSettings
             ],
             'bukutamu' => [
                 'foto_wajib' => true,
+            ],
+            'unggah' => [
+                'gambar_mb' => 5,
+                'berkas_mb' => 100,
             ],
             'balasan' => [
                 'template' => [
@@ -260,6 +267,27 @@ class SiteSettings
     public function fotoTamuWajib(): bool
     {
         return (bool) $this->get('bukutamu.foto_wajib', true);
+    }
+
+    /**
+     * Largest image an admin may upload (news covers, gallery, slider, site images), in MB.
+     */
+    public function batasGambarMb(): int
+    {
+        return $this->batasUnggahMb('gambar_mb', 5);
+    }
+
+    /**
+     * Largest non-image file (documents, PDF) an admin may upload, in MB.
+     */
+    public function batasBerkasMb(): int
+    {
+        return $this->batasUnggahMb('berkas_mb', 100);
+    }
+
+    protected function batasUnggahMb(string $key, int $default): int
+    {
+        return max(1, min(self::BATAS_UNGGAH_MAKS_MB, (int) $this->get('unggah.'.$key, $default)));
     }
 
     /**

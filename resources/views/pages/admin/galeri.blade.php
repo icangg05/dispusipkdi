@@ -4,6 +4,7 @@ use App\Enums\MediaType;
 use App\Livewire\Concerns\ReordersRecords;
 use App\Models\MediaItem;
 use App\Support\Media;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -89,11 +90,15 @@ new #[Layout('layouts::admin')] #[Title('Galeri')] class extends Component
         $data = $this->validate([
             'type' => ['required', Rule::enum(MediaType::class)],
             'title' => ['required', 'string', 'max:120'],
-            'youtube_url' => [$this->type === 'video' ? 'required' : 'nullable', 'nullable', 'url', 'regex:~(youtube\.com|youtu\.be)~'],
+            'youtube_url' => [$this->type === 'video' ? 'required' : 'nullable', 'nullable', 'url', 'regex:~(youtube\.com|youtu\.be)~', function (string $attribute, string $value, Closure $fail): void {
+                if (! MediaItem::youtubeIdFrom($value)) {
+                    $fail('Tautan belum dikenali sebagai video YouTube.');
+                }
+            }],
             'duration' => ['nullable', 'regex:/^\d{1,2}:\d{2}(:\d{2})?$/'],
             'taken_at' => ['nullable', 'date'],
             'is_published' => ['boolean'],
-            'gambar' => [$butuhGambar ? 'required' : 'nullable', 'image', 'max:4096'],
+            'gambar' => [$butuhGambar ? 'required' : 'nullable', 'image', 'max:'.site()->batasGambarMb() * 1024],
             'poster_line1' => [$this->pakaiPoster ? 'required' : 'nullable', 'string', 'max:30'],
             'poster_line2' => ['nullable', 'string', 'max:30'],
             'poster_sub' => ['nullable', 'string', 'max:80'],
@@ -106,7 +111,7 @@ new #[Layout('layouts::admin')] #[Title('Galeri')] class extends Component
             'duration.regex' => 'Tulis durasi seperti 3:24.',
             'gambar.required' => 'Pilih foto.',
             'gambar.image' => 'Berkas harus berupa gambar.',
-            'gambar.max' => 'Ukuran gambar paling besar 4 MB.',
+            'gambar.max' => 'Ukuran gambar paling besar '.site()->batasGambarMb().' MB.',
             'poster_line1.required' => 'Tulis baris pertama poster.',
         ]);
 
@@ -136,8 +141,11 @@ new #[Layout('layouts::admin')] #[Title('Galeri')] class extends Component
         if ($this->editId) {
             MediaItem::query()->findOrFail($this->editId)->update($values);
         } else {
-            // New media goes to the top of the gallery.
-            MediaItem::query()->create($values + ['sort' => (int) MediaItem::query()->min('sort') - 1]);
+            // New media goes to the top of the gallery. "sort" is unsigned, so shift the rest down instead of going below zero.
+            DB::transaction(function () use ($values): void {
+                MediaItem::query()->increment('sort');
+                MediaItem::query()->create($values + ['sort' => 0]);
+            });
         }
 
         $this->showForm = false;
@@ -165,6 +173,7 @@ new #[Layout('layouts::admin')] #[Title('Galeri')] class extends Component
                 ->when($this->jenis !== 'semua', fn ($q) => $q->where('type', $this->jenis))
                 ->orderBy('sort')->orderBy('id')
                 ->get(),
+            'previewId' => MediaItem::youtubeIdFrom($this->youtube_url),
         ];
     }
 };
@@ -205,7 +214,7 @@ new #[Layout('layouts::admin')] #[Title('Galeri')] class extends Component
                             <span class="pnl-media__badge"><x-dk.badge :tone="$item->isVideo() ? 'lentera' : 'laut'" :icon="$item->isVideo() ? 'film' : 'image'" size="sm" on-image>{{ $item->type->label() }}{{ $item->duration ? ' · '.$item->duration : '' }}</x-dk.badge></span>
                         </div>
                         <div class="pnl-media__body">
-                            <strong>{{ $item->title }}</strong>
+                            <strong class="line-clamp-2" title="{{ $item->title }}">{{ $item->title }}</strong>
                             <small>{{ $item->date_label }}{{ $item->is_published ? '' : ' · Disembunyikan' }}</small>
                         </div>
                         <div class="pnl-media__foot">
@@ -235,13 +244,45 @@ new #[Layout('layouts::admin')] #[Title('Galeri')] class extends Component
                 <x-ad.field label="Keterangan" for="title" error="title"><input id="title" class="pnl-input" wire:model="title" maxlength="120" placeholder="Contoh: Pojok Baca Anak setiap Sabtu"></x-ad.field>
                 @if ($type === 'video')
                     <div class="pnl-grid pnl-grid--2">
-                        <x-ad.field label="Tautan YouTube" for="youtube_url" error="youtube_url"><input id="youtube_url" type="url" class="pnl-input" wire:model="youtube_url" placeholder="https://www.youtube.com/watch?v=…"></x-ad.field>
-                        <x-ad.field label="Durasi" for="duration" error="duration" optional><input id="duration" class="pnl-input" wire:model="duration" placeholder="3:24"></x-ad.field>
+                        <x-ad.field label="Tautan YouTube" for="youtube_url" error="youtube_url"><input id="youtube_url" type="url" class="pnl-input" wire:model.live.debounce.500ms="youtube_url" placeholder="https://www.youtube.com/watch?v=…"></x-ad.field>
+                        <x-ad.field label="Durasi" for="duration" error="duration" optional help="Terisi otomatis dari YouTube saat pratinjau dimuat."><input id="duration" class="pnl-input" wire:model="duration" placeholder="3:24"></x-ad.field>
                     </div>
+                    <div class="pnl-grid pnl-grid--2 items-start">
+                        <div class="pnl-form">
+                            <x-ad.field label="Pratinjau video">
+                                @if ($previewId)
+                                    {{-- The YouTube player swaps its own iframe in; wire:ignore keeps Livewire from undoing that. --}}
+                                    <div class="aspect-video w-full overflow-hidden rounded-md border border-line-control bg-black" wire:key="pratinjau-{{ $previewId }}">
+                                        <div class="size-full" wire:ignore x-data="youtubePreview(@js($previewId))"><div x-ref="player"></div></div>
+                                    </div>
+                                @else
+                                    <div class="grid aspect-video w-full place-items-center rounded-md border-[1.5px] border-dashed border-line-control bg-surface-sunken p-4 text-center text-sm text-ink-muted">
+                                        {{ filled($youtube_url) ? 'Tautan belum dikenali sebagai video YouTube. Salin tautan dari tombol Bagikan di YouTube.' : 'Tempel tautan YouTube untuk melihat pratinjau.' }}
+                                    </div>
+                                @endif
+                            </x-ad.field>
+                            <x-ad.check model="is_published">Tampilkan di situs</x-ad.check>
+                        </div>
+                        <div class="pnl-form">
+                            <x-ad.field label="Tanggal" for="taken_at" error="taken_at" optional><input id="taken_at" type="date" class="pnl-input max-w-[220px]" wire:model="taken_at"></x-ad.field>
+                            <x-ad.check model="pakaiPoster" live>Pakai poster tipografis sebagai pengganti gambar</x-ad.check>
+                            @unless ($pakaiPoster)
+                                <x-ad.field label="Gambar sampul" error="gambar" optional help="Bila dikosongkan, dipakai gambar sampul dari YouTube.">
+                                    <x-ad.image-upload model="gambar" :file="$gambar" :current="\App\Support\Media::url($gambarLama)" />
+                                </x-ad.field>
+                            @endunless
+                        </div>
+                    </div>
+                @else
+                    <x-ad.field label="Tanggal" for="taken_at" error="taken_at" optional><input id="taken_at" type="date" class="pnl-input max-w-[220px]" wire:model="taken_at"></x-ad.field>
+                    <x-ad.check model="pakaiPoster" live>Pakai poster tipografis sebagai pengganti gambar</x-ad.check>
+                    @unless ($pakaiPoster)
+                        <x-ad.field label="Foto" error="gambar">
+                            <x-ad.image-upload model="gambar" :file="$gambar" :current="\App\Support\Media::url($gambarLama)" />
+                        </x-ad.field>
+                    @endunless
                 @endif
-                <x-ad.field label="Tanggal" for="taken_at" error="taken_at" optional><input id="taken_at" type="date" class="pnl-input max-w-[220px]" wire:model="taken_at"></x-ad.field>
 
-                <x-ad.check model="pakaiPoster" live>Pakai poster tipografis sebagai pengganti gambar</x-ad.check>
                 @if ($pakaiPoster)
                     <div class="pnl-grid pnl-grid--main">
                         <div class="pnl-form">
@@ -259,12 +300,10 @@ new #[Layout('layouts::admin')] #[Title('Galeri')] class extends Component
                             <x-dk.poster :line1="$poster_line1 ?: 'Judul'" :line2="$poster_line2" :sub="$poster_sub" :tone="$poster_tone" />
                         </div>
                     </div>
-                @else
-                    <x-ad.field :label="$type === 'video' ? 'Gambar sampul' : 'Foto'" error="gambar" :optional="$type === 'video'" :help="$type === 'video' ? 'Bila dikosongkan, dipakai gambar sampul dari YouTube.' : null">
-                        <x-ad.image-upload model="gambar" :file="$gambar" :current="\App\Support\Media::url($gambarLama)" />
-                    </x-ad.field>
                 @endif
-                <x-ad.check model="is_published">Tampilkan di situs</x-ad.check>
+                @if ($type !== 'video')
+                    <x-ad.check model="is_published">Tampilkan di situs</x-ad.check>
+                @endif
             </form>
             <x-slot:footer>
                 <x-dk.button variant="secondary" wire:click="tutup">Batal</x-dk.button>

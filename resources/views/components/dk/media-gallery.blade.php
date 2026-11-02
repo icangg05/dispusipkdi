@@ -35,7 +35,7 @@
                             <span x-show="g.type !== 'video'"><x-dk.icon name="image" :size="13" /></span>
                             <span x-text="g.type === 'video' ? 'Video' + (g.duration ? ' · ' + g.duration : '') : 'Foto'"></span>
                         </span>
-                        <strong x-text="g.title"></strong>
+                        <strong class="line-clamp-2" x-text="g.title"></strong>
                     </span>
                 </button>
             </li>
