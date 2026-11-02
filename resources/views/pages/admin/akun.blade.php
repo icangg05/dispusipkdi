@@ -84,9 +84,9 @@ new #[Layout('layouts::admin')] #[Title('Akun saya')] class extends Component
         <form class="pnl-card" wire:submit="simpanSandi">
             <div class="pnl-card__head"><h2 class="pnl-card__title"><x-dk.icon name="lock" :size="18" /> Kata sandi</h2></div>
             <div class="pnl-card__body pnl-form">
-                <x-ad.field label="Kata sandi saat ini" for="current_password" error="current_password"><input id="current_password" type="password" class="pnl-input" wire:model="current_password" autocomplete="current-password"></x-ad.field>
-                <x-ad.field label="Kata sandi baru" for="password" error="password" help="Minimal 8 karakter."><input id="password" type="password" class="pnl-input" wire:model="password" autocomplete="new-password"></x-ad.field>
-                <x-ad.field label="Ulangi kata sandi baru" for="password_confirmation"><input id="password_confirmation" type="password" class="pnl-input" wire:model="password_confirmation" autocomplete="new-password"></x-ad.field>
+                <x-ad.field label="Kata sandi saat ini" for="current_password" error="current_password"><x-ad.password id="current_password" model="current_password" autocomplete="current-password" /></x-ad.field>
+                <x-ad.field label="Kata sandi baru" for="password" error="password" help="Minimal 8 karakter."><x-ad.password id="password" model="password" autocomplete="new-password" /></x-ad.field>
+                <x-ad.field label="Ulangi kata sandi baru" for="password_confirmation"><x-ad.password id="password_confirmation" model="password_confirmation" autocomplete="new-password" /></x-ad.field>
             </div>
             <div class="pnl-card__foot"><span></span><x-dk.button type="submit" variant="primary" icon="save">Ganti kata sandi</x-dk.button></div>
         </form>
